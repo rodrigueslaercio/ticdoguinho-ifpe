@@ -7,6 +7,7 @@ package br.edu.ifpe.recife.controllers;
 
 import br.edu.ifpe.recife.model.classes.Tutor;
 import br.edu.ifpe.recife.model.dao.ManagerDao;
+import br.edu.ifpe.recife.utils.PasswordSecurity;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -28,13 +29,16 @@ public class TutorController {
     }
     
     public String insert() {
+        String encryptPass = PasswordSecurity.encrypt(cadastro.getSenha());
+        this.cadastro.setSenha(encryptPass);
+        
         ManagerDao.getCurrentInstance().insert(this.cadastro);
         
         FacesContext.getCurrentInstance().
                 addMessage(null, new FacesMessage("Tutor cadastrado com sucesso"));
-        
+          
         this.cadastro = new Tutor();
-        
+      
         return "index";
     }
 

@@ -2,27 +2,32 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:b="http://bootsfaces.net/ui">
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <b:form id="formRegistroTutor">
-            <b:panelGrid columns="2">
-                <h:outputText value="Usuário"/>
-                <b:inputText value="#{tutorController.cadastro.usuario}"/>
-            </b:panelGrid>
-            <b:panelGrid columns="2">
-                <h:outputText value="Email"/>
-                <b:inputText value="#{tutorController.cadastro.email}"/>
-            </b:panelGrid>
-            <b:panelGrid columns="2">
-                <h:outputText value="Senha"/>
-                <b:inputSecret value="#{tutorController.cadastro.senha}"/>
-            </b:panelGrid>
-            
-            <b:commandButton value="registrar-se" action="#{tutorController.insert()}"/>
-        </b:form>
+        <p:dialog id="dialLogin" draggable="false" closable="false" 
+                  closeOnEscape="false" resizable="false" modal="false"
+                  visible="true">
+            <b:form id="formRegistroTutor">
+                <b:panelGrid columns="2">
+                    <h:outputText value="Usuário"/>
+                    <b:inputText value="#{tutorController.cadastro.usuario}"/>
+                </b:panelGrid>
+                <b:panelGrid columns="2">
+                    <h:outputText value="Email"/>
+                    <b:inputText value="#{tutorController.cadastro.email}"/>
+                </b:panelGrid>
+                <b:panelGrid columns="2">
+                    <h:outputText value="Senha"/>
+                    <b:inputSecret value="#{tutorController.cadastro.senha}"/>
+                </b:panelGrid>
+
+                <b:commandButton value="registrar-se" action="#{tutorController.insert()}"/>
+            </b:form>      
+        </p:dialog>
     </h:body>
 </html>
 

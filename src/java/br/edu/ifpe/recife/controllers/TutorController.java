@@ -39,7 +39,7 @@ public class TutorController {
           
         this.cadastro = new Tutor();
       
-        return "index";
+        return "login";
     }
 
     public Tutor getCadastro() {

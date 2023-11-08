@@ -20,8 +20,7 @@ import javax.faces.context.FacesContext;
 @ManagedBean
 @SessionScoped
 public class LoginController {
-
-    private Tutor tutorlogado;
+    private Tutor tutorLogado;
 
     public String realizarLogin(String email, String senha) {
 
@@ -32,9 +31,9 @@ public class LoginController {
 
             if (isPassCorrect) {
                 Tutor tLogin = (Tutor) ManagerDao.getCurrentInstance().read("select t from Tutor t where t.email = '" + email + "'", Tutor.class).get(0);
-                this.tutorlogado = tLogin;
+                this.tutorLogado = tLogin;
 
-                return "index";
+                return "index_tutor";
             } else {
                 FacesContext.getCurrentInstance()
                     .addMessage(null, 
@@ -52,13 +51,19 @@ public class LoginController {
         }
 
     }
-
-    public Tutor getTutorlogado() {
-        return tutorlogado;
+    
+    public String logout() {
+        this.tutorLogado = null;
+        
+        return "login";
     }
 
-    public void setTutorlogado(Tutor tutorlogado) {
-        this.tutorlogado = tutorlogado;
+    public Tutor getTutorLogado() {
+        return tutorLogado;
+    }
+
+    public void setTutorLogado(Tutor tutorlogado) {
+        this.tutorLogado = tutorlogado;
     }
 
 }

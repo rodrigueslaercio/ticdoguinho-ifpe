@@ -8,6 +8,8 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
+        <b:growl id="gro" delay="4000"/>
+        
         <c:if test="#{loginController.tutorLogado eq null}">
             <script>
                 location.href = 'login.xhtml'
@@ -23,7 +25,8 @@
 
                 <b:navbarLinks pull="right">
                     <b:dropMenu value="#{(loginController.tutorLogado ne null?loginController.tutorLogado.usuario:'')}">
-                        <b:navLink value="Logout" onclick="location.href = 'login.xhtml';ajax:loginController.logout()"/>
+                        <b:navLink value="Perfil" href="perfil_tutor.xhtml"/>
+                        <b:navLink value="Logout" onclick="location.href = 'login.xhtml';ajax:loginController.logout()"/>                        
                     </b:dropMenu>
                 </b:navbarLinks>
             </b:navBar>

@@ -52,6 +52,15 @@ public class LoginController {
 
     }
     
+    public String alterarPerfilSessao() {
+        ManagerDao.getCurrentInstance().update(this.tutorLogado);
+        
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+        "Sucesso!", "Usuário alterado com sucesso."));
+        
+        return "perfil_tutor";
+    }
+    
     public String logout() {
         this.tutorLogado = null;
         

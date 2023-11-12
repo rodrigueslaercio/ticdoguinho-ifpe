@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -22,7 +24,10 @@ public class Pet {
     private String nome;
     private String mesAnoNascimento;
     private String porte;
-
+    @ManyToOne
+    @JoinColumn(name = "TUTOR_CODIGO")
+    private Tutor tutor;
+    
     public int getCodigo() {
         return codigo;
     }
@@ -54,4 +59,14 @@ public class Pet {
     public void setPorte(String porte) {
         this.porte = porte;
     }
+
+    public Tutor getTutor() {
+        return tutor;
+    }
+
+    public void setTutor(Tutor tutor) {
+        this.tutor = tutor;
+    }
+    
+    
 }

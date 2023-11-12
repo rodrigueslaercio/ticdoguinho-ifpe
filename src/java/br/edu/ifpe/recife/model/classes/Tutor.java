@@ -7,6 +7,7 @@ package br.edu.ifpe.recife.model.classes;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,13 +29,9 @@ public class Tutor {
     private String email;
     private String senha;
     private boolean mamae;
-    @OneToMany
-    private List<Pet> pets;
+    @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
+    private List<Pet> pets = new ArrayList<>();
     
-    public Tutor() {
-        this.pets = new ArrayList<>();
-    }
-
     public int getCodigo() {
         return codigo;
     }
@@ -74,7 +71,15 @@ public class Tutor {
     public void setMamae(boolean mamae) {
         this.mamae = mamae;
     }
+
+    public List<Pet> getPets() {
+        return pets;
+    }
+
+    public void setPets(List<Pet> pets) {
+        this.pets = pets;
+    }
     
     
-    
+
 }

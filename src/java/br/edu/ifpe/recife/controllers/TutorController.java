@@ -43,6 +43,19 @@ public class TutorController {
         return "login";
     }
     
+    public String alterarPerfil() {
+        Tutor tutorLogado = ((LoginController)((HttpSession)FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(true))
+                .getAttribute("loginController")).getTutorLogado();
+        
+        ManagerDao.getCurrentInstance().update(tutorLogado);
+        
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+        "Sucesso!", "Usuário alterado com sucesso."));
+        
+        return "perfil_tutor";
+    }
+    
     public void alterarSenha(String senha, String novaSenha, String confirma) {
         Tutor tutorLogado = ((LoginController)((HttpSession)FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(true))

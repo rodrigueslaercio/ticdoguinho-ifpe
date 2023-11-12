@@ -9,31 +9,32 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        
+
         <ui:include src="menu_tutor.xhtml" rendered="true"/>
-        
+
         <p:dialog id="dialEditar" draggable="false" closable="false" 
                   closeOnEscape="false" resizable="false" modal="false"
                   visible="true" width="750">
-            
+
             <b:form>
                 <b:panelGrid columns="2">
                     <h:outputText value="Usuário"/>
                     <b:inputText value="#{loginController.tutorLogado.usuario}"/>
-                    
+
                     <h:outputText value="Email"/>
                     <b:inputText value="#{loginController.tutorLogado.email}"/>
-                    
+
                     <h:outputText value="Mamãe?"/>
-                    <!--
-                        TODO
-                    -->
+                    <b:panelGrid columns="2">
+                        <b:radiobutton value="#{loginController.tutorLogado.mamae}" itemLabel="Sim" itemValue="true" required="true"/>
+                        <b:radiobutton value="#{loginController.tutorLogado.mamae}" itemLabel="Não" itemValue="false" required="true"/>
+                    </b:panelGrid>
                     <b:commandButton value="Editar" action="#{loginController.alterarPerfilSessao()}" />
                 </b:panelGrid>
             </b:form>
-                
-                      
-         </p:dialog>
+
+
+        </p:dialog>
     </h:body>
 </html>
 

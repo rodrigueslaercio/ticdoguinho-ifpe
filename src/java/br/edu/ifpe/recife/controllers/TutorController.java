@@ -13,6 +13,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -40,6 +41,36 @@ public class TutorController {
         this.cadastro = new Tutor();
       
         return "login";
+    }
+    
+    public void alterarSenha(String senha, String novaSenha, String confirma) {
+        Tutor tutorLogado = ((LoginController)((HttpSession)FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(true))
+                .getAttribute("loginController")).getTutorLogado();
+        
+        if(!PasswordSecurity.decrypt(senha, tutorLogado.getSenha())) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage("A senha digitada está incorreta."));
+            
+            return;
+        }
+        
+        if(!novaSenha.equals(confirma)) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage("A nova senha não bate com a confirmação."));
+            
+            return;
+        }
+        
+        tutorLogado.setSenha(PasswordSecurity.encrypt(novaSenha));
+        ManagerDao.getCurrentInstance().update(tutorLogado);
+        // TODO Message does not reach growl because function has no explicit return
+        FacesContext.getCurrentInstance().addMessage(null, 
+                new FacesMessage("Senha alterada com sucesso"));
+        
+        ((LoginController)((HttpSession)FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(true))
+                .getAttribute("loginController")).logout();
     }
 
     public Tutor getCadastro() {

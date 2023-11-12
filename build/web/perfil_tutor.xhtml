@@ -9,13 +9,14 @@
     </h:head>
     <h:body>
         <ui:include src="menu_tutor.xhtml" rendered="true"/>
-        
+
         <b:form>
             <b:panelGrid columns="2" colSpans="2,10">
                 <b:panel>
                     <b:commandLink value="Editar perfil" href="editar_tutor.xhtml"/><br/>
-                    
-                    <b:commandLink value="Alterar senha"></b:commandLink>
+
+                    <b:commandLink value="Alterar senha" ajax="true" 
+                                   oncomplete="$('.mAltSenha').modal('show')"/>
                 </b:panel>
                 <b:panel>
                     <h:outputText value="Perfil de " style="font-size: 25pt"/>
@@ -23,12 +24,30 @@
                     <b:panelGrid columns="2" colSpans="2,10">
                         <h:outputText value="Email:"/>
                         <h:outputText value="#{loginController.tutorLogado.email}"/>
-                        
+
                         <h:outputText value="Mamãe?"/>
                         <h:outputText value="#{loginController.tutorLogado.mamae eq false?'Não':'Sim'}"/>
                     </b:panelGrid>
                 </b:panel>
             </b:panelGrid>
+        </b:form>
+
+        <b:form id="formAlterarSenha">
+            <b:modal id="modalAltSenha" class="mAltSenha">
+                <b:panelGrid columns="2">
+                    <h:outputText value="Senha"/>
+                    <b:inputSecret value="#{senha}"/>
+
+                    <h:outputText value="Nova senha"/>
+                    <b:inputSecret value="#{novaSenha}"/>
+
+                    <h:outputText value="Confirma nova senha"/>
+                    <b:inputSecret value="#{confirma}"/>
+                    
+                    <b:commandButton value="Alterar senha" 
+                                     action="#{tutorController.alterarSenha(senha, novaSenha, confirma)}"/>
+                </b:panelGrid>
+            </b:modal>
         </b:form>
     </h:body>
 </html>

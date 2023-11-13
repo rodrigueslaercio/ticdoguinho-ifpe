@@ -64,7 +64,11 @@
                     <b:inputText value="#{petController.selection.mesAnoNascimento}"/>
 
                     <h:outputText value="Porte"/>
-                    <b:inputText value="#{petController.selection.porte}"/> 
+                    <b:panelGrid columns="4">
+                        <b:radiobutton value="#{petController.selection.porte}" item-label="P" item-value="Pequeno" required="true"/>
+                        <b:radiobutton value="#{petController.selection.porte}" item-label="M" item-value="Médio" required="true"/>
+                        <b:radiobutton value="#{petController.selection.porte}" item-label="G" item-value="Grande" required="true"/>
+                    </b:panelGrid>
 
                     <b:commandButton value="Alterar" action="#{petController.alterar()}"/>
                 </b:panelGrid>

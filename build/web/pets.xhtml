@@ -14,7 +14,7 @@
             <b:dataTable value="#{petController.readAllPets()}" var="pet">
                 <b:dataTableColumn value="#{pet.nome}" label="Nome"/>
                 <b:dataTableColumn value="#{pet.mesAnoNascimento}" label="Nascimento"/>
-                <b:dataTableColumn value="#{pet.porte}" label="Porte"/>
+                <b:dataTableColumn value="#{pet.porte}" label="Porte"/>                
                 <b:dataTableColumn label="Ações">
                     <b:commandButton icon="search" ajax="true" 
                                      oncomplete="$('.mDetail').modal('show')"
@@ -50,6 +50,9 @@
 
                     <h:outputText value="Tutor"/>
                     <h:outputText value="#{petController.selection.tutor.usuario}"/>
+                    
+                    <h:outputText value="Código de compartilhamento"/>
+                    <h:outputText value="#{petController.selection.codCompartilhamento}"/>
                 </b:panelGrid>
             </b:modal>
         </b:form>

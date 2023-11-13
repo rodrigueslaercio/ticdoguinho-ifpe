@@ -5,6 +5,7 @@
  */
 package br.edu.ifpe.recife.model.classes;
 
+import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,6 +25,7 @@ public class Pet {
     private String nome;
     private String mesAnoNascimento;
     private String porte;
+    private UUID codCompartilhamento = UUID.randomUUID();
     @ManyToOne
     @JoinColumn(name = "TUTOR_CODIGO")
     private Tutor tutor;
@@ -67,6 +69,13 @@ public class Pet {
     public void setTutor(Tutor tutor) {
         this.tutor = tutor;
     }
-    
+
+    public UUID getCodCompartilhamento() {
+        return codCompartilhamento;
+    }
+
+    public void setCodCompartilhamento(UUID codCompartilhamento) {
+        this.codCompartilhamento = codCompartilhamento;
+    }
     
 }

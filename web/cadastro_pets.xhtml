@@ -2,28 +2,36 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:b="http://bootsfaces.net/ui">
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <b:growl id="gro" delay="4000"/> 
-        <b:form id="formPets">
-            <b:panelGrid columns="2">
-                <h:outputText value="Nome"/>
-                <b:inputText value="#{petController.cadastro.nome}"/>
-            </b:panelGrid>
-            <b:panelGrid columns="2">
+        <b:growl id="gro" delay="4000"/>
+
+        <p:dialog id="dialLogin" draggable="false" closable="false" 
+                  closeOnEscape="false" resizable="false" modal="false"
+                  visible="true">
+            <b:form id="formPets">
+                <b:panelGrid columns="2">
+                    <h:outputText value="Nome"/>
+                    <b:inputText value="#{petController.cadastro.nome}"/>
+                </b:panelGrid>
+                <b:panelGrid columns="2">
+                    <h:outputText value="Mês e ano de nascimento"/>
+                    <b:inputText value="#{petController.cadastro.mesAnoNascimento}"/>
+                </b:panelGrid>
                 <h:outputText value="Porte"/>
-                <b:inputText value="#{petController.cadastro.porte}"/>
-            </b:panelGrid>
-            <b:panelGrid columns="2">
-                <h:outputText value="Mês e ano de nascimento"/>
-                <b:inputText value="#{petController.cadastro.mesAnoNascimento}"/>
-            </b:panelGrid>
-            
-            <b:commandButton value="cadastrar" action="#{petController.insert()}"/>
-        </b:form>
+                <b:panelGrid columns="4">
+                    <b:radiobutton value="#{petController.cadastro.porte}" item-label="P" item-value="Pequeno" required="true"/>
+                    <b:radiobutton value="#{petController.cadastro.porte}" item-label="M" item-value="Médio" required="true"/>
+                    <b:radiobutton value="#{petController.cadastro.porte}" item-label="G" item-value="Grande" required="true"/>
+                </b:panelGrid>
+
+                <b:commandButton value="Cadastrar" action="#{petController.insert()}"/>
+            </b:form>
+        </p:dialog>
     </h:body>
 </html>
 

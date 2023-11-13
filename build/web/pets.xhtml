@@ -3,18 +3,44 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
         <ui:include src="menu_tutor.xhtml" rendered="true"/>
-        <b:form>
+        <b:form id="formShowPets">
             <b:dataTable value="#{petController.readAllPets()}" var="pet">
                 <b:dataTableColumn value="#{pet.nome}" label="Nome"/>
                 <b:dataTableColumn value="#{pet.mesAnoNascimento}" label="Nascimento"/>
                 <b:dataTableColumn value="#{pet.porte}" label="Porte"/>
+                <b:dataTableColumn label="Ações">
+                    <b:commandButton icon="search" ajax="true" 
+                                     oncomplete="$('.mDetail').modal('show')"
+                                     update=":formShowPets:modalDetail">
+                        <f:setPropertyActionListener value="#{pet}" 
+                                                     target="#{petController.selection}"/>
+                    </b:commandButton>
+                </b:dataTableColumn>
+
             </b:dataTable>
+
+            <b:modal id="modalDetail" class="mDetail">
+                <b:panelGrid columns="2">
+                    <h:outputText value="Nome"/>
+                    <h:outputText value="#{petController.selection.nome}"/>
+
+                    <h:outputText value="Nascimento"/>
+                    <h:outputText value="#{petController.selection.mesAnoNascimento}"/>
+
+                    <h:outputText value="Porte"/>
+                    <h:outputText value="#{petController.selection.porte}"/>
+
+                    <h:outputText value="Tutor"/>
+                    <h:outputText value="#{petController.selection.tutor.usuario}"/>
+                </b:panelGrid>
+            </b:modal>
         </b:form>
     </h:body>
 </html>

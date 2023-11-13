@@ -27,6 +27,7 @@ import javax.servlet.http.HttpSession;
 public class PetController {
 
     private Pet cadastro;
+    private Pet selection;
 
     @PostConstruct
     public void init() {
@@ -72,4 +73,12 @@ public class PetController {
         this.cadastro = cadastro;
     }
 
+    public Pet getSelection() {
+        return selection;
+    }
+
+    public void setSelection(Pet selection) {
+        this.selection = selection;
+    }
+    
 }

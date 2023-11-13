@@ -73,6 +73,13 @@ public class PetController {
         
         return "pets";
     }
+    
+    public String deletar() {
+        ManagerDao.getCurrentInstance().delete(this.selection);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Sucesso!", "Pet deletado com sucesso"));
+        return "pets";
+    }
 
     public Pet getCadastro() {
         return cadastro;

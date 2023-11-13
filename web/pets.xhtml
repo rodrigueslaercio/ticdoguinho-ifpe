@@ -22,9 +22,14 @@
                         <f:setPropertyActionListener value="#{pet}" 
                                                      target="#{petController.selection}"/>
                     </b:commandButton>
-                    
+
                     <b:commandButton icon="pencil" oncomplete="$('.mEdit').modal('show')"
                                      update=":formEditPet:modalEdit">
+                        <f:setPropertyActionListener value="#{pet}" 
+                                                     target="#{petController.selection}"/>
+                    </b:commandButton>
+
+                    <b:commandButton icon="trash" update=":formShowPets" action="#{petController.deletar()}">
                         <f:setPropertyActionListener value="#{pet}" 
                                                      target="#{petController.selection}"/>
                     </b:commandButton>
@@ -48,7 +53,7 @@
                 </b:panelGrid>
             </b:modal>
         </b:form>
-        
+
         <b:form id="formEditPet">
             <b:modal id="modalEdit" class="mEdit">
                 <b:panelGrid columns="2">
@@ -60,7 +65,7 @@
 
                     <h:outputText value="Porte"/>
                     <b:inputText value="#{petController.selection.porte}"/> 
-                    
+
                     <b:commandButton value="Alterar" action="#{petController.alterar()}"/>
                 </b:panelGrid>
             </b:modal>

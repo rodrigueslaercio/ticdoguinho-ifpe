@@ -64,6 +64,15 @@ public class PetController {
        
         return pets;
     }
+    
+    public String alterar() {
+        ManagerDao.getCurrentInstance().update(this.selection);
+        
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Sucesso!", "Pet editado com sucesso"));
+        
+        return "pets";
+    }
 
     public Pet getCadastro() {
         return cadastro;

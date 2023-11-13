@@ -22,6 +22,12 @@
                         <f:setPropertyActionListener value="#{pet}" 
                                                      target="#{petController.selection}"/>
                     </b:commandButton>
+                    
+                    <b:commandButton icon="pencil" oncomplete="$('.mEdit').modal('show')"
+                                     update=":formEditPet:modalEdit">
+                        <f:setPropertyActionListener value="#{pet}" 
+                                                     target="#{petController.selection}"/>
+                    </b:commandButton>
                 </b:dataTableColumn>
 
             </b:dataTable>
@@ -39,6 +45,23 @@
 
                     <h:outputText value="Tutor"/>
                     <h:outputText value="#{petController.selection.tutor.usuario}"/>
+                </b:panelGrid>
+            </b:modal>
+        </b:form>
+        
+        <b:form id="formEditPet">
+            <b:modal id="modalEdit" class="mEdit">
+                <b:panelGrid columns="2">
+                    <h:outputText value="Nome"/>
+                    <b:inputText value="#{petController.selection.nome}"/>
+
+                    <h:outputText value="Nascimento"/>
+                    <b:inputText value="#{petController.selection.mesAnoNascimento}"/>
+
+                    <h:outputText value="Porte"/>
+                    <b:inputText value="#{petController.selection.porte}"/> 
+                    
+                    <b:commandButton value="Alterar" action="#{petController.alterar()}"/>
                 </b:panelGrid>
             </b:modal>
         </b:form>

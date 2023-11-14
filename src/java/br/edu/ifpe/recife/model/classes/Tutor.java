@@ -30,7 +30,7 @@ public class Tutor {
     private String senha;
     private boolean mamae;
     @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
-    private List<Pet> pets = new ArrayList<>();
+    private List<TutorPet> tutorPets = new ArrayList<>();
     
     public int getCodigo() {
         return codigo;
@@ -72,14 +72,12 @@ public class Tutor {
         this.mamae = mamae;
     }
 
-    public List<Pet> getPets() {
-        return pets;
+    public List<TutorPet> getTutorPets() {
+        return tutorPets;
     }
 
-    public void setPets(List<Pet> pets) {
-        this.pets = pets;
+    public void setTutorPets(List<TutorPet> tutorPets) {
+        this.tutorPets = tutorPets;
     }
-    
-    
-
+   
 }

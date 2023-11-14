@@ -12,7 +12,7 @@
 
         <p:dialog id="dialLogin" draggable="false" closable="false" 
                   closeOnEscape="false" resizable="false" modal="false"
-                  visible="true">
+                  visible="true" position="top">
             <b:form id="formPets">
                 <b:panelGrid columns="2">
                     <h:outputText value="Nome"/>
@@ -31,6 +31,21 @@
 
                 <b:commandButton value="Cadastrar" action="#{petController.insert()}"/>
             </b:form>
+            
+            <h:outputText value="Ou compartilhe"/>
+            
+            <p:dialog id="dialCompartilhar" draggable="false" closable="false" 
+                      closeOnEscape="false" resizable="false" modal="false"
+                      visible="true" position="bottom">
+                <b:form id="formCompartilhar">
+                    <b:panelGrid columns="2">
+                        <h:outputText value="Código de compartilhamento"/>
+                        <b:inputText value="#{codigo}"/>
+                    </b:panelGrid>
+                    <b:commandButton value="Compartilhar" action="#{petController.compartilhar(codigo)}"/>
+                </b:form>
+            </p:dialog>
+
         </p:dialog>
     </h:body>
 </html>

@@ -7,10 +7,12 @@ package br.edu.ifpe.recife.controllers;
 
 import br.edu.ifpe.recife.model.classes.Pet;
 import br.edu.ifpe.recife.model.classes.Tutor;
+import br.edu.ifpe.recife.model.classes.TutorPet;
 import br.edu.ifpe.recife.model.dao.ManagerDao;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -28,6 +30,7 @@ public class PetController {
 
     private Pet cadastro;
     private Pet selection;
+    private TutorPet selectTutorPet;
 
     @PostConstruct
     public void init() {
@@ -39,8 +42,12 @@ public class PetController {
                 .getExternalContext().getSession(true))
                 .getAttribute("loginController")).getTutorLogado();
 
-        this.cadastro.setTutor(tutorLogado);
+        TutorPet tutorPet = new TutorPet();
+        tutorPet.setPet(this.cadastro);
+        tutorPet.setTutor(tutorLogado);
+
         ManagerDao.getCurrentInstance().insert(this.cadastro);
+        ManagerDao.getCurrentInstance().insert(tutorPet);
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Pet " + this.cadastro.getNome()
                 + " cadastrado com sucesso!"));
@@ -56,28 +63,57 @@ public class PetController {
                 .getAttribute("loginController")).getTutorLogado();
         List<Pet> pets = null;
 
-        String jpql = "select p from Pet p where p.tutor = :tutor";
+        String jpql = "select tp.pet from TutorPet tp where tp.tutor = :tutor";
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("tutor", tutorLogado);
-        
+
         pets = ManagerDao.getCurrentInstance().read(jpql, Pet.class, parameters);
-       
+
         return pets;
     }
-    
+
     public String alterar() {
         ManagerDao.getCurrentInstance().update(this.selection);
-        
+
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-                        "Sucesso!", "Pet editado com sucesso"));
-        
+                "Sucesso!", "Pet editado com sucesso"));
+
         return "pets";
     }
-    
+
     public String deletar() {
         ManagerDao.getCurrentInstance().delete(this.selection);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-                        "Sucesso!", "Pet deletado com sucesso"));
+                "Sucesso!", "Pet deletado com sucesso"));
+        return "pets";
+    }
+
+    public String compartilhar(String codigo) {
+        try {
+            String jpql = "select p from Pet p where p.codCompartilhamento = :codCompartilhamento";
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("codCompartilhamento", UUID.fromString(codigo));
+            Pet pet = (Pet) ManagerDao.getCurrentInstance().read(jpql, Pet.class, parameters).get(0);
+
+            Tutor tutorLogado = ((LoginController) ((HttpSession) FacesContext.getCurrentInstance()
+                    .getExternalContext().getSession(true))
+                    .getAttribute("loginController")).getTutorLogado();
+
+            TutorPet tutorPet = new TutorPet();
+            tutorPet.setTutor(tutorLogado);
+            tutorPet.setPet(pet);
+            ManagerDao.getCurrentInstance().insert(tutorPet);
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Pet compartilhado com sucesso."));
+
+        } catch (IllegalArgumentException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Código invalido", ""));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Pet não existe", ""));
+        }
+
         return "pets";
     }
 
@@ -96,5 +132,12 @@ public class PetController {
     public void setSelection(Pet selection) {
         this.selection = selection;
     }
-    
+
+    public TutorPet getSelectTutorPet() {
+        return selectTutorPet;
+    }
+
+    public void setSelectTutorPet(TutorPet selectTutorPet) {
+        this.selectTutorPet = selectTutorPet;
+    }
 }

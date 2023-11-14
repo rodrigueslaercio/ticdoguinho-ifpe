@@ -5,13 +5,19 @@
  */
 package br.edu.ifpe.recife.model.classes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -26,9 +32,8 @@ public class Pet {
     private String mesAnoNascimento;
     private String porte;
     private UUID codCompartilhamento = UUID.randomUUID();
-    @ManyToOne
-    @JoinColumn(name = "TUTOR_CODIGO")
-    private Tutor tutor;
+    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
+    private List<TutorPet> tutorPets = new ArrayList<>();
     
     public int getCodigo() {
         return codigo;
@@ -62,12 +67,12 @@ public class Pet {
         this.porte = porte;
     }
 
-    public Tutor getTutor() {
-        return tutor;
+    public List<TutorPet> getTutorPets() {
+        return tutorPets;
     }
 
-    public void setTutor(Tutor tutor) {
-        this.tutor = tutor;
+    public void setTutorPets(List<TutorPet> tutorPets) {
+        this.tutorPets = tutorPets;
     }
 
     public UUID getCodCompartilhamento() {

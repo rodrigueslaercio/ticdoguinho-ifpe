@@ -4,7 +4,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
@@ -48,9 +49,12 @@
                     <h:outputText value="Porte"/>
                     <h:outputText value="#{petController.selection.porte}"/>
 
-                    <h:outputText value="Tutor"/>
-                    <h:outputText value="#{petController.selection.tutor.usuario}"/>
-                    
+                    <h:outputText value="Tutores"/>
+                    <ui:repeat value="#{petController.selection.tutorPets}" var="tutores">
+                        <h:outputText value="#{tutores.tutor.usuario}"/>
+                    </ui:repeat>
+
+
                     <h:outputText value="Código de compartilhamento"/>
                     <h:outputText value="#{petController.selection.codCompartilhamento}"/>
                 </b:panelGrid>

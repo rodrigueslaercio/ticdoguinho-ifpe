@@ -19,7 +19,7 @@
         
         <p:dialog id="dialLogin" draggable="false" closable="false" 
                   closeOnEscape="false" resizable="false" modal="false"
-                  visible="true">
+                  visible="true" header="Login">
             <b:form>
                 <b:panelGrid columns="2">
                     <h:outputText value="Email"/>
@@ -30,7 +30,7 @@
                 </b:panelGrid>
                 <b:commandButton value="Login" look="primary" action="#{loginController.realizarLogin(email, senha)}"/><br/>
                 <h:outputText value="Não possui uma conta?"/>
-                <b:button look="link" value="registre-se" href="registro_tutor.xhtml"/>
+                <b:button look="link" value="Registre-se" href="registro_tutor.xhtml"/>
             </b:form>
         </p:dialog>
     </h:body>

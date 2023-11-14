@@ -9,12 +9,11 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-
         <ui:include src="menu_tutor.xhtml" rendered="true"/>
 
         <p:dialog id="dialEditar" draggable="false" closable="false" 
                   closeOnEscape="false" resizable="false" modal="false"
-                  visible="true" width="750">
+                  visible="true" width="750" header="Editar perfil">
 
             <b:form>
                 <b:panelGrid columns="2">
@@ -32,8 +31,6 @@
                     <b:commandButton value="Editar" action="#{tutorController.alterarPerfil()}" />
                 </b:panelGrid>
             </b:form>
-
-
         </p:dialog>
     </h:body>
 </html>

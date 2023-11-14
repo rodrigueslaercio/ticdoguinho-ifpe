@@ -11,7 +11,7 @@
     <h:body>
         <p:dialog id="dialLogin" draggable="false" closable="false" 
                   closeOnEscape="false" resizable="false" modal="false"
-                  visible="true">
+                  visible="true" header="Registre-se">
             <b:form id="formRegistroTutor">
                 <b:panelGrid columns="2">
                     <h:outputText value="Usuário"/>
@@ -31,7 +31,7 @@
                     <b:radiobutton value="#{tutorController.cadastro.mamae}" itemLabel="Sim" itemValue="true" required="true"/>
                     <b:radiobutton value="#{tutorController.cadastro.mamae}" itemLabel="Não" itemValue="false" required="true"/>
                 </b:panelGrid>
-                <b:commandButton value="registrar-se" action="#{tutorController.insert()}"/>
+                <b:commandButton value="Registrar-se" action="#{tutorController.insert()}"/>
             </b:form>      
         </p:dialog>
     </h:body>

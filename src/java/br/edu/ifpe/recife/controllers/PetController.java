@@ -82,9 +82,17 @@ public class PetController {
     }
 
     public String deletar() {
-        ManagerDao.getCurrentInstance().delete(this.selection);
+        List<TutorPet> tutores = ManagerDao.getCurrentInstance().read("select tp from TutorPet tp where tp.pet.codigo = " + this.selection.getCodigo(), TutorPet.class);
+       
+        for(TutorPet tutor : tutores)  {
+            ManagerDao.getCurrentInstance().delete(tutor);
+        }
+
+        ManagerDao.getCurrentInstance().delete(this.selection);     
+        
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-                "Sucesso!", "Pet deletado com sucesso"));
+             "Sucesso!", "Pet deletado com sucesso"));
+       
         return "pets";
     }
 
@@ -116,7 +124,7 @@ public class PetController {
 
         return "pets";
     }
-
+   
     public Pet getCadastro() {
         return cadastro;
     }

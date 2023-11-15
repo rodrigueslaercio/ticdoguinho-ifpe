@@ -12,7 +12,7 @@
     <h:body>
         <ui:include src="menu_tutor.xhtml" rendered="true"/>
         <b:form id="formShowPets">
-            <b:dataTable value="#{petController.readAllPets()}" var="pet">
+            <b:dataTable value="#{petController.readAllPets()}" var="pet" autoUpdate="true">
                 <b:dataTableColumn value="#{pet.nome}" label="Nome"/>
                 <b:dataTableColumn value="#{pet.mesAnoNascimento}" label="Nascimento"/>
                 <b:dataTableColumn value="#{pet.porte}" label="Porte"/>                
@@ -39,7 +39,7 @@
             </b:dataTable>
 
             <b:modal id="modalDetail" class="mDetail">
-                <b:panelGrid columns="2">
+                <b:panelGrid columns="2" >
                     <h:outputText value="Nome"/>
                     <h:outputText value="#{petController.selection.nome}"/>
 
@@ -51,9 +51,8 @@
 
                     <h:outputText value="Tutores"/>
                     <ui:repeat value="#{petController.selection.tutorPets}" var="tutores">
-                        <h:outputText value="#{tutores.tutor.usuario}"/>
+                        <h:outputText value="#{tutores.tutor.usuario} "/>
                     </ui:repeat>
-
 
                     <h:outputText value="Código de compartilhamento"/>
                     <h:outputText value="#{petController.selection.codCompartilhamento}"/>

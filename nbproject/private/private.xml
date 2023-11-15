@@ -3,14 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Estudos/IFPE/Code/Web3/TicDoguinho/src/java/br/edu/ifpe/recife/model/classes/Tutor.java</file>
-            <file>file:/C:/Estudos/IFPE/Code/Web3/TicDoguinho/src/java/br/edu/ifpe/recife/controllers/LoginController.java</file>
-            <file>file:/C:/Estudos/IFPE/Code/Web3/TicDoguinho/web/login.xhtml</file>
-            <file>file:/C:/Estudos/IFPE/Code/Web3/TicDoguinho/src/java/br/edu/ifpe/recife/controllers/PetController.java</file>
-            <file>file:/C:/Estudos/IFPE/Code/Web3/TicDoguinho/src/java/br/edu/ifpe/recife/model/classes/TutorPet.java</file>
-            <file>file:/C:/Estudos/IFPE/Code/Web3/TicDoguinho/src/java/br/edu/ifpe/recife/model/classes/Pet.java</file>
-            <file>file:/C:/Estudos/IFPE/Code/Web3/TicDoguinho/web/pets.xhtml</file>
-            <file>file:/C:/Estudos/IFPE/Code/Web3/TicDoguinho/web/cadastro_pets.xhtml</file>
+            <file>file:/C:/Estudos/IFPE/Code/Web3/TicDoguinho/web/editar_tutor.xhtml</file>
+            <file>file:/C:/Estudos/IFPE/Code/Web3/TicDoguinho/web/perfil_tutor.xhtml</file>
         </group>
     </open-files>
 </project-private>

@@ -48,12 +48,7 @@
 
                     <h:outputText value="Porte"/>
                     <h:outputText value="#{petController.selection.porte}"/>
-
-                    <h:outputText value="Tutores"/>
-                    <ui:repeat value="#{petController.selection.tutorPets}" var="tutores">
-                        <h:outputText value="#{tutores.tutor.usuario} "/>
-                    </ui:repeat>
-
+       
                     <h:outputText value="Código de compartilhamento"/>
                     <h:outputText value="#{petController.selection.codCompartilhamento}"/>
                 </b:panelGrid>

@@ -62,7 +62,7 @@ public class PetController {
                 .getExternalContext().getSession(true))
                 .getAttribute("loginController")).getTutorLogado();
         List<Pet> pets = null;
-
+        
         String jpql = "select tp.pet from TutorPet tp where tp.tutor = :tutor";
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("tutor", tutorLogado);
@@ -102,11 +102,19 @@ public class PetController {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("codCompartilhamento", UUID.fromString(codigo));
             Pet pet = (Pet) ManagerDao.getCurrentInstance().read(jpql, Pet.class, parameters).get(0);
-
+            
+            List<TutorPet> pets = ManagerDao.getCurrentInstance().read("select tp from TutorPet tp where tp.pet.codigo = " + pet.getCodigo(), Pet.class);
+            
+            if(pets.size() == 2) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Pet já possui dois tutores", ""));
+                return "pets";
+            }
+                       
             Tutor tutorLogado = ((LoginController) ((HttpSession) FacesContext.getCurrentInstance()
                     .getExternalContext().getSession(true))
                     .getAttribute("loginController")).getTutorLogado();
-
+            
             TutorPet tutorPet = new TutorPet();
             tutorPet.setTutor(tutorLogado);
             tutorPet.setPet(pet);
@@ -124,7 +132,7 @@ public class PetController {
 
         return "pets";
     }
-   
+    
     public Pet getCadastro() {
         return cadastro;
     }

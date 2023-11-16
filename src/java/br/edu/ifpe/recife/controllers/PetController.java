@@ -30,7 +30,6 @@ public class PetController {
 
     private Pet cadastro;
     private Pet selection;
-    private TutorPet selectTutorPet;
 
     @PostConstruct
     public void init() {
@@ -147,13 +146,5 @@ public class PetController {
 
     public void setSelection(Pet selection) {
         this.selection = selection;
-    }
-
-    public TutorPet getSelectTutorPet() {
-        return selectTutorPet;
-    }
-
-    public void setSelectTutorPet(TutorPet selectTutorPet) {
-        this.selectTutorPet = selectTutorPet;
     }
 }

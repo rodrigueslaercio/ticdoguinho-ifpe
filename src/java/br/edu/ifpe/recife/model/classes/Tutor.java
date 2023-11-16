@@ -29,8 +29,6 @@ public class Tutor {
     private String email;
     private String senha;
     private boolean mamae;
-    @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
-    private List<TutorPet> tutorPets = new ArrayList<>();
     
     public int getCodigo() {
         return codigo;
@@ -70,14 +68,5 @@ public class Tutor {
 
     public void setMamae(boolean mamae) {
         this.mamae = mamae;
-    }
-
-    public List<TutorPet> getTutorPets() {
-        return tutorPets;
-    }
-
-    public void setTutorPets(List<TutorPet> tutorPets) {
-        this.tutorPets = tutorPets;
-    }
-   
+    } 
 }

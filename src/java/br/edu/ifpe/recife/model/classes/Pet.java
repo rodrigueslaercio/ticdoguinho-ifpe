@@ -28,8 +28,6 @@ public class Pet {
     private String mesAnoNascimento;
     private String porte;
     private UUID codCompartilhamento = UUID.randomUUID();
-    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
-    private List<TutorPet> tutorPets = new ArrayList<>();
     
     public int getCodigo() {
         return codigo;
@@ -61,14 +59,6 @@ public class Pet {
 
     public void setPorte(String porte) {
         this.porte = porte;
-    }
-
-    public List<TutorPet> getTutorPets() {
-        return tutorPets;
-    }
-
-    public void setTutorPets(List<TutorPet> tutorPets) {
-        this.tutorPets = tutorPets;
     }
 
     public UUID getCodCompartilhamento() {

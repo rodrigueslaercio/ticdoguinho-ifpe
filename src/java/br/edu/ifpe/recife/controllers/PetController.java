@@ -57,7 +57,7 @@ public class PetController {
     public List<Pet> readAllPets() {
         Tutor tutorLogado = tutorLogadoSession();
         List<Pet> pets = null;
-        
+
         String jpql = "select tp.pet from TutorPet tp where tp.tutor = :tutor";
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("tutor", tutorLogado);
@@ -78,16 +78,16 @@ public class PetController {
 
     public String deletar() {
         List<TutorPet> tutores = ManagerDao.getCurrentInstance().read("select tp from TutorPet tp where tp.pet.codigo = " + this.selection.getCodigo(), TutorPet.class);
-       
-        for(TutorPet tutor : tutores)  {
+
+        for (TutorPet tutor : tutores) {
             ManagerDao.getCurrentInstance().delete(tutor);
         }
 
-        ManagerDao.getCurrentInstance().delete(this.selection);     
-        
+        ManagerDao.getCurrentInstance().delete(this.selection);
+
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-             "Sucesso!", "Pet deletado com sucesso"));
-       
+                "Sucesso!", "Pet deletado com sucesso"));
+
         return "pets";
     }
 
@@ -97,17 +97,17 @@ public class PetController {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("codCompartilhamento", UUID.fromString(codigo));
             Pet pet = (Pet) ManagerDao.getCurrentInstance().read(jpql, Pet.class, parameters).get(0);
-                        
+
             List<TutorPet> pets = ManagerDao.getCurrentInstance().read("select tp from TutorPet tp where tp.pet.codigo = " + pet.getCodigo(), Pet.class);
-            
-            if(pets.size() == 2) {
+
+            if (pets.size() == 2) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "Pet já possui dois tutores", ""));
+                        "Pet já possui dois tutores", ""));
                 return "pets";
             }
-                       
+
             Tutor tutorLogado = tutorLogadoSession();
-            
+
             TutorPet tutorPet = new TutorPet();
             tutorPet.setTutor(tutorLogado);
             tutorPet.setPet(pet);
@@ -125,13 +125,13 @@ public class PetController {
 
         return "pets";
     }
-    
+
     private Tutor tutorLogadoSession() {
         return ((LoginController) ((HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(true))
                 .getAttribute("loginController")).getTutorLogado();
     }
-    
+
     public Pet getCadastro() {
         return cadastro;
     }

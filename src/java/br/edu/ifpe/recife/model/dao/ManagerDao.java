@@ -5,6 +5,7 @@
  */
 package br.edu.ifpe.recife.model.dao;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManager;
@@ -82,7 +83,7 @@ public class ManagerDao {
 
         return resultList;
     }
-
+    
     public void delete(Object o) {
         EntityManager em = emf.createEntityManager();
 

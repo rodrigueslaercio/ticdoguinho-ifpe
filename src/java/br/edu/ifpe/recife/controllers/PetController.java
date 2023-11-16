@@ -9,7 +9,9 @@ import br.edu.ifpe.recife.model.classes.Pet;
 import br.edu.ifpe.recife.model.classes.Tutor;
 import br.edu.ifpe.recife.model.classes.TutorPet;
 import br.edu.ifpe.recife.model.dao.ManagerDao;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -43,6 +45,14 @@ public class PetController {
         tutorPet.setPet(this.cadastro);
         tutorPet.setTutor(tutorLogado);
 
+        if (checkDuplicata(this.cadastro.getNome())) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Pet já com esse nome já cadastrado", ""));
+            this.cadastro = new Pet();
+
+            return "cadastro_pets";
+        }
+
         ManagerDao.getCurrentInstance().insert(this.cadastro);
         ManagerDao.getCurrentInstance().insert(tutorPet);
 
@@ -73,7 +83,7 @@ public class PetController {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
                 "Sucesso!", "Pet editado com sucesso"));
 
-        return "pets";
+        return "perfil_pet";
     }
 
     public String deletar() {
@@ -97,7 +107,7 @@ public class PetController {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("codCompartilhamento", UUID.fromString(codigo));
             Pet pet = (Pet) ManagerDao.getCurrentInstance().read(jpql, Pet.class, parameters).get(0);
-
+            
             List<TutorPet> pets = ManagerDao.getCurrentInstance().read("select tp from TutorPet tp where tp.pet.codigo = " + pet.getCodigo(), Pet.class);
 
             if (pets.size() == 2) {
@@ -126,6 +136,28 @@ public class PetController {
         return "pets";
     }
 
+    public List<TutorPet> tutoresDoPet() {
+        return ManagerDao.getCurrentInstance().read("select tp from TutorPet tp where tp.pet.codigo = " + this.selection.getCodigo(), Pet.class);
+    }
+
+    public boolean checkDuplicata(String nome) {
+        List<Pet> petsAssociados = ManagerDao.getCurrentInstance().read("select p from Pet p join TutorPet tp where tp.tutor.codigo = " + tutorLogadoSession().getCodigo(), Pet.class);
+
+        String jpql = "select p from Pet p where p.nome = :nome";
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("nome", nome);
+        List<Pet> petsComMesmoNome = ManagerDao.getCurrentInstance().read(jpql, Pet.class, parameters);
+
+        for (Pet petAssociado : petsAssociados) {
+            for (Pet petComMesmoNome : petsComMesmoNome) {
+                if (petAssociado.getNome().equals(petComMesmoNome.getNome())) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
     private Tutor tutorLogadoSession() {
         return ((LoginController) ((HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(true))

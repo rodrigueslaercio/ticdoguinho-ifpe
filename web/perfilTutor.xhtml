@@ -5,15 +5,15 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:b="http://bootsfaces.net/ui">
     <h:head>
-        <title>Facelet Title</title>
+        <title>#{loginController.tutorLogado.usuario}</title>
     </h:head>
     <h:body>
-        <ui:include src="menu_tutor.xhtml" rendered="true"/>
+        <ui:include src="menuTutor.xhtml" rendered="true"/>
 
         <b:form>
             <b:panelGrid columns="2" colSpans="2,10">
                 <b:panel>
-                    <b:commandLink value="Editar perfil" href="editar_tutor.xhtml"/><br/>
+                    <b:commandLink value="Editar perfil" href="editarTutor.xhtml"/><br/>
 
                     <b:commandLink value="Alterar senha" ajax="true" 
                                    oncomplete="$('.mAltSenha').modal('show')"/>

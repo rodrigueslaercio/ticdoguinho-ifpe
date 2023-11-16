@@ -38,7 +38,7 @@ public class TutorController {
                     addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
                             "ERRO.", "Email já cadastrado."));
 
-            return "registro_tutor";
+            return "registroTutor";
         } else {
             String encryptPass = PasswordSecurity.encrypt(cadastro.getSenha());
             this.cadastro.setSenha(encryptPass);
@@ -63,7 +63,7 @@ public class TutorController {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
                 "Sucesso!", "Usuário alterado com sucesso."));
 
-        return "perfil_tutor";
+        return "perfilTutor";
     }
 
     public void alterarSenha(String senha, String novaSenha, String confirma) {

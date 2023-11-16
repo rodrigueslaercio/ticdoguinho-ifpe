@@ -33,7 +33,7 @@ public class LoginController {
                 Tutor tLogin = (Tutor) ManagerDao.getCurrentInstance().read("select t from Tutor t where t.email = '" + email + "'", Tutor.class).get(0);
                 this.tutorLogado = tLogin;
 
-                return "index_tutor";
+                return "indexTutor";
             } else {
                 FacesContext.getCurrentInstance()
                     .addMessage(null, 

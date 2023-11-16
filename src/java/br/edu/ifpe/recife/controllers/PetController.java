@@ -9,9 +9,7 @@ import br.edu.ifpe.recife.model.classes.Pet;
 import br.edu.ifpe.recife.model.classes.Tutor;
 import br.edu.ifpe.recife.model.classes.TutorPet;
 import br.edu.ifpe.recife.model.dao.ManagerDao;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -50,7 +48,7 @@ public class PetController {
                     "Pet já com esse nome já cadastrado", ""));
             this.cadastro = new Pet();
 
-            return "cadastro_pets";
+            return "cadastroPets";
         }
 
         ManagerDao.getCurrentInstance().insert(this.cadastro);
@@ -83,7 +81,7 @@ public class PetController {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
                 "Sucesso!", "Pet editado com sucesso"));
 
-        return "perfil_pet";
+        return "perfilPet";
     }
 
     public String deletar() {
@@ -158,11 +156,6 @@ public class PetController {
 
         return false;
     }
-    private Tutor tutorLogadoSession() {
-        return ((LoginController) ((HttpSession) FacesContext.getCurrentInstance()
-                .getExternalContext().getSession(true))
-                .getAttribute("loginController")).getTutorLogado();
-    }
 
     public Pet getCadastro() {
         return cadastro;
@@ -178,5 +171,11 @@ public class PetController {
 
     public void setSelection(Pet selection) {
         this.selection = selection;
+    }
+    
+    private Tutor tutorLogadoSession() {
+        return ((LoginController) ((HttpSession) FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(true))
+                .getAttribute("loginController")).getTutorLogado();
     }
 }

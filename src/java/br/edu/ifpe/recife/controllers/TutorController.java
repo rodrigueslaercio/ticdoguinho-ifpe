@@ -67,9 +67,7 @@ public class TutorController {
     }
 
     public void alterarSenha(String senha, String novaSenha, String confirma) {
-        Tutor tutorLogado = ((LoginController) ((HttpSession) FacesContext.getCurrentInstance()
-                .getExternalContext().getSession(true))
-                .getAttribute("loginController")).getTutorLogado();
+        Tutor tutorLogado = tutorLogadoSession();
 
         if (!PasswordSecurity.decrypt(senha, tutorLogado.getSenha())) {
             FacesContext.getCurrentInstance().addMessage(null,
@@ -87,13 +85,19 @@ public class TutorController {
 
         tutorLogado.setSenha(PasswordSecurity.encrypt(novaSenha));
         ManagerDao.getCurrentInstance().update(tutorLogado);
-        // TODO Message does not reach growl because function has no explicit return
+
         FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage("Senha alterada com sucesso"));
 
         ((LoginController) ((HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(true))
                 .getAttribute("loginController")).logout();
+    }
+    
+    private Tutor tutorLogadoSession() {
+        return ((LoginController) ((HttpSession) FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(true))
+                .getAttribute("loginController")).getTutorLogado();
     }
 
     public Tutor getCadastro() {

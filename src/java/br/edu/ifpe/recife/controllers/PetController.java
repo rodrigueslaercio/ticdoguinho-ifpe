@@ -38,9 +38,7 @@ public class PetController {
     }
 
     public String insert() {
-        Tutor tutorLogado = ((LoginController) ((HttpSession) FacesContext.getCurrentInstance()
-                .getExternalContext().getSession(true))
-                .getAttribute("loginController")).getTutorLogado();
+        Tutor tutorLogado = tutorLogadoSession();
 
         TutorPet tutorPet = new TutorPet();
         tutorPet.setPet(this.cadastro);
@@ -58,9 +56,7 @@ public class PetController {
     }
 
     public List<Pet> readAllPets() {
-        Tutor tutorLogado = ((LoginController) ((HttpSession) FacesContext.getCurrentInstance()
-                .getExternalContext().getSession(true))
-                .getAttribute("loginController")).getTutorLogado();
+        Tutor tutorLogado = tutorLogadoSession();
         List<Pet> pets = null;
         
         String jpql = "select tp.pet from TutorPet tp where tp.tutor = :tutor";
@@ -102,7 +98,7 @@ public class PetController {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("codCompartilhamento", UUID.fromString(codigo));
             Pet pet = (Pet) ManagerDao.getCurrentInstance().read(jpql, Pet.class, parameters).get(0);
-            
+                        
             List<TutorPet> pets = ManagerDao.getCurrentInstance().read("select tp from TutorPet tp where tp.pet.codigo = " + pet.getCodigo(), Pet.class);
             
             if(pets.size() == 2) {
@@ -111,9 +107,7 @@ public class PetController {
                 return "pets";
             }
                        
-            Tutor tutorLogado = ((LoginController) ((HttpSession) FacesContext.getCurrentInstance()
-                    .getExternalContext().getSession(true))
-                    .getAttribute("loginController")).getTutorLogado();
+            Tutor tutorLogado = tutorLogadoSession();
             
             TutorPet tutorPet = new TutorPet();
             tutorPet.setTutor(tutorLogado);
@@ -131,6 +125,12 @@ public class PetController {
         }
 
         return "pets";
+    }
+    
+    private Tutor tutorLogadoSession() {
+        return ((LoginController) ((HttpSession) FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(true))
+                .getAttribute("loginController")).getTutorLogado();
     }
     
     public Pet getCadastro() {

@@ -43,6 +43,7 @@ public class PetController {
         tutorPet.setPet(this.cadastro);
         tutorPet.setTutor(tutorLogado);
 
+        // checa se o tutor logado já possui um pet com mesmo nome
         if (checkDuplicata(this.cadastro.getNome())) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "Pet já com esse nome já cadastrado", ""));
@@ -87,6 +88,7 @@ public class PetController {
     public String deletar() {
         List<TutorPet> tutores = ManagerDao.getCurrentInstance().read("select tp from TutorPet tp where tp.pet.codigo = " + this.selection.getCodigo(), TutorPet.class);
 
+        // deleta primeiro o pet na tabela TutorPet
         for (TutorPet tutor : tutores) {
             ManagerDao.getCurrentInstance().delete(tutor);
         }

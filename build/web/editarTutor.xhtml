@@ -4,7 +4,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:b="http://bootsfaces.net/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <title>Editar perfil</title>
     </h:head>
@@ -15,7 +16,14 @@
                   closeOnEscape="false" resizable="false" modal="false"
                   visible="true" width="750" header="Editar perfil">
 
-            <b:form>
+            <b:form enctype="multipart/form-data">
+                <c:if test="#{loginController.tutorLogado.imagem ne null}">
+                    <b:panel>
+                        <img src="data:image/jpeg;base64,#{tutorController.imagemTutor}" height="200"/>
+                    </b:panel>
+                </c:if>
+                <p:fileUpload fileUploadListener="#{tutorController.upload}" mode="advanced" />
+                <p:graphicImage id="imgOutputTutor" value="#{tutorController.graphicImage}"/>
                 <b:panelGrid columns="2">
                     <h:outputText value="Usuário"/>
                     <b:inputText value="#{loginController.tutorLogado.usuario}"/>

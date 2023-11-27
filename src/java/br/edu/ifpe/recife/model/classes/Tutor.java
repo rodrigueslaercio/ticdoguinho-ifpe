@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 /**
  *
@@ -25,6 +26,8 @@ public class Tutor {
     private String email;
     private String senha;
     private boolean mamae;
+    @Lob
+    private byte[] imagem;
     
     public int getCodigo() {
         return codigo;
@@ -65,4 +68,13 @@ public class Tutor {
     public void setMamae(boolean mamae) {
         this.mamae = mamae;
     }  
+
+    public byte[] getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(byte[] imagem) {
+        this.imagem = imagem;
+    }
+    
 }

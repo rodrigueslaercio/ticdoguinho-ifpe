@@ -8,6 +8,8 @@ package br.edu.ifpe.recife.controllers;
 import br.edu.ifpe.recife.model.classes.Tutor;
 import br.edu.ifpe.recife.model.dao.ManagerDao;
 import br.edu.ifpe.recife.utils.PasswordSecurity;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -15,6 +17,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import org.primefaces.event.FileUploadEvent;
 
 /**
  *
@@ -92,6 +95,28 @@ public class TutorController {
         ((LoginController) ((HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(true))
                 .getAttribute("loginController")).logout();
+    }
+    
+    public void upload(FileUploadEvent e) throws IOException{
+        byte[] blob = new byte[(int) e.getFile().getSize()];
+        e.getFile().getInputstream().read(blob);
+        
+        Tutor tutorLogado = tutorLogadoSession();
+        tutorLogado.setImagem(blob);
+        
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Imagem upada com sucesso."));
+    }
+    
+    public String getImagemTutor() {
+        Tutor tutorLogado = tutorLogadoSession();
+        byte[] blob = tutorLogado.getImagem();
+        return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
+    }
+    
+    public String getGraphicImage() {
+        Tutor tutorLogado = tutorLogadoSession();
+        byte[] blob = tutorLogado.getImagem();
+        return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
     }
     
     private Tutor tutorLogadoSession() {

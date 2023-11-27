@@ -9,6 +9,8 @@ import br.edu.ifpe.recife.model.classes.Pet;
 import br.edu.ifpe.recife.model.classes.Tutor;
 import br.edu.ifpe.recife.model.classes.TutorPet;
 import br.edu.ifpe.recife.model.dao.ManagerDao;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +21,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-
+import org.primefaces.event.FileUploadEvent;
 /**
  *
  * @author laerc
@@ -107,7 +109,7 @@ public class PetController {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("codCompartilhamento", UUID.fromString(codigo));
             Pet pet = (Pet) ManagerDao.getCurrentInstance().read(jpql, Pet.class, parameters).get(0);
-            
+
             List<TutorPet> pets = ManagerDao.getCurrentInstance().read("select tp from TutorPet tp where tp.pet.codigo = " + pet.getCodigo(), Pet.class);
 
             if (pets.size() == 2) {
@@ -159,6 +161,28 @@ public class PetController {
         return false;
     }
 
+    // faz upload da imagem para o pet
+    public void upload(FileUploadEvent e) throws IOException {
+        byte[] blob = new byte[(int) e.getFile().getSize()];
+        e.getFile().getInputstream().read(blob);
+
+        this.cadastro.setImagem(blob);
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Imagem upada com sucesso."));
+    }
+
+    // retorna a imagem do pet
+    public String getImagemPet() {
+        byte[] blob = this.selection.getImagem();
+        return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
+    }
+
+    // fix param value é nulo da tag graphicImage 
+    public String getGraphicImage() {
+        byte[] blob = this.cadastro.getImagem();
+        return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
+    }
+
     public Pet getCadastro() {
         return cadastro;
     }
@@ -174,7 +198,7 @@ public class PetController {
     public void setSelection(Pet selection) {
         this.selection = selection;
     }
-    
+
     private Tutor tutorLogadoSession() {
         return ((LoginController) ((HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(true))

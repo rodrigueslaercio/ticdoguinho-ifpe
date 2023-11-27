@@ -5,14 +5,12 @@
  */
 package br.edu.ifpe.recife.model.classes;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 /**
  *
@@ -27,6 +25,8 @@ public class Pet {
     private String mesAnoNascimento;
     private String porte;
     private UUID codCompartilhamento = UUID.randomUUID();
+    @Lob
+    private byte[] imagem;
     
     public int getCodigo() {
         return codigo;
@@ -68,4 +68,11 @@ public class Pet {
         this.codCompartilhamento = codCompartilhamento;
     }
 
+    public byte[] getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(byte[] imagem) {
+        this.imagem = imagem;
+    }
 }

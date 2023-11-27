@@ -13,8 +13,10 @@
 
         <p:dialog id="dialLogin" draggable="false" closable="false" 
                   closeOnEscape="false" resizable="false" modal="false"
-                  visible="true" position="center" header="Cadastrar pet">
-            <b:form id="formPets">
+                  visible="true" position="center" header="Cadastrar pet" height="350" width="800">
+            <b:form id="formPets" enctype="multipart/form-data">
+                <p:fileUpload fileUploadListener="#{petController.upload}" mode="advanced" />
+                <p:graphicImage id="imgOutput" value="#{petController.graphicImage}"/>
                 <b:panelGrid columns="2">
                     <h:outputText value="Nome"/>
                     <b:inputText value="#{petController.cadastro.nome}"/>

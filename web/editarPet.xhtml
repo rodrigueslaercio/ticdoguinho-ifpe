@@ -13,9 +13,15 @@
 
         <p:dialog id="dialEditar" draggable="false" closable="false" 
                   closeOnEscape="false" resizable="false" modal="false"
-                  visible="true" width="750" header="Editar perfil">
+                  visible="true" width="750" header="Editar perfil" position="center">
 
-            <b:form>
+            <b:form enctype="multipart/form-data">
+                <b:panel>
+                    <img src="data:image/jpeg;base64,#{petController.imagemPet}" height="200"/>
+                </b:panel>
+                <p:fileUpload fileUploadListener="#{petController.uploadChange}" mode="advanced" />
+                <p:graphicImage id="imgOutput" value="#{petController.graphicImage}"/>
+
                 <b:panelGrid columns="2">
                     <h:outputText value="Nome"/>
                     <b:inputText value="#{petController.selection.nome}"/>

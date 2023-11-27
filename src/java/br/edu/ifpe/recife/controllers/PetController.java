@@ -22,6 +22,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import org.primefaces.event.FileUploadEvent;
+
 /**
  *
  * @author laerc
@@ -171,6 +172,15 @@ public class PetController {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Imagem upada com sucesso."));
     }
 
+    public void uploadChange(FileUploadEvent e) throws IOException {
+        byte[] blob = new byte[(int) e.getFile().getSize()];
+        e.getFile().getInputstream().read(blob);
+
+        this.selection.setImagem(blob);
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Imagem upada com sucesso."));
+    }
+
     // retorna a imagem do pet
     public String getImagemPet() {
         byte[] blob = this.selection.getImagem();
@@ -182,7 +192,7 @@ public class PetController {
         byte[] blob = this.cadastro.getImagem();
         return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
     }
-
+    
     public Pet getCadastro() {
         return cadastro;
     }

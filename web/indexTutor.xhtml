@@ -3,12 +3,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:b="http://bootsfaces.net/ui">
     <h:head>
         <title>Home</title>
     </h:head>
     <h:body>
         <ui:include src="menuTutor.xhtml" rendered="true"/>
+        <b:form id="formIndexTutor">
+            <b:panelGrid colSpans="4,4,4">
+                <c:forEach items="#{petController.readAllPets()}" var="pet">
+                    <b:panel title="#{pet.nome}" style="width: 300px;">
+                        <a href="">
+                            <img src="data:image/jpeg;base64,#{petController.formatImagemIndex(pet.imagem)}" height="150"
+                             style="border-radius: 50%"/>
+                        </a>
+                    </b:panel>
+                </c:forEach>
+            </b:panelGrid>
+        </b:form>
     </h:body>
 </html>
 

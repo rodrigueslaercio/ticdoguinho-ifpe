@@ -186,6 +186,11 @@ public class PetController {
         byte[] blob = this.selection.getImagem();
         return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
     }
+    
+    // retorna a imagem do pet no for each do index
+    public String formatImagemIndex(byte[] blob) {
+       return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
+    }
 
     // fix param value é nulo da tag graphicImage 
     public String getGraphicImage() {

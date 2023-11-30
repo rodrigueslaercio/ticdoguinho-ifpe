@@ -19,7 +19,8 @@
                 <b:panel>
                     <img src="data:image/jpeg;base64,#{petController.imagemPet}" height="200"/>
                 </b:panel>
-                <p:fileUpload fileUploadListener="#{petController.uploadChange}" mode="advanced" />
+                <p:fileUpload fileUploadListener="#{petController.uploadChange}" mode="advanced" update="messages"/>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" />
                 <p:graphicImage id="imgOutput" value="#{petController.graphicImage}"/>
 
                 <b:panelGrid columns="2">

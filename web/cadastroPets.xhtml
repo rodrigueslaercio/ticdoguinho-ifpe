@@ -15,7 +15,8 @@
                   closeOnEscape="false" resizable="false" modal="false"
                   visible="true" position="center" header="Cadastrar pet" height="350" width="800">
             <b:form id="formPets" enctype="multipart/form-data">
-                <p:fileUpload fileUploadListener="#{petController.upload}" mode="advanced" />
+                <p:fileUpload fileUploadListener="#{petController.upload}" mode="advanced" update="messages"/>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" />
                 <p:graphicImage id="imgOutput" value="#{petController.graphicImage}"/>
                 <b:panelGrid columns="2">
                     <h:outputText value="Nome"/>

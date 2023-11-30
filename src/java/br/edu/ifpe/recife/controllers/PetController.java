@@ -22,6 +22,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -166,19 +167,32 @@ public class PetController {
     public void upload(FileUploadEvent e) throws IOException {
         byte[] blob = new byte[(int) e.getFile().getSize()];
         e.getFile().getInputstream().read(blob);
+        UploadedFile upFile = e.getFile();
 
-        this.cadastro.setImagem(blob);
-
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Imagem upada com sucesso."));
+        if (upFile != null && !upFile.getFileName().isEmpty()) {
+            this.cadastro.setImagem(blob);
+            FacesMessage message = new FacesMessage("Successo!", upFile.getFileName() + " foi salva.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro.", "Não foi possível salvar a imagem.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
     }
 
+    // upload para o editarPet
     public void uploadChange(FileUploadEvent e) throws IOException {
         byte[] blob = new byte[(int) e.getFile().getSize()];
         e.getFile().getInputstream().read(blob);
+        UploadedFile upFile = e.getFile();
 
-        this.selection.setImagem(blob);
-
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Imagem upada com sucesso."));
+        if (upFile != null && !upFile.getFileName().isEmpty()) {
+            this.selection.setImagem(blob);
+            FacesMessage message = new FacesMessage("Successo!", upFile.getFileName() + " foi salva.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro.", "Não foi possível salvar a imagem.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
     }
 
     // retorna a imagem do pet
@@ -186,10 +200,10 @@ public class PetController {
         byte[] blob = this.selection.getImagem();
         return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
     }
-    
+
     // retorna a imagem do pet no for each do index
     public String formatImagemIndex(byte[] blob) {
-       return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
+        return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
     }
 
     // fix param value é nulo da tag graphicImage 
@@ -197,7 +211,7 @@ public class PetController {
         byte[] blob = this.cadastro.getImagem();
         return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
     }
-    
+
     public Pet getCadastro() {
         return cadastro;
     }

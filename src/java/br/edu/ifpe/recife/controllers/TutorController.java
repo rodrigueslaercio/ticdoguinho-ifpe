@@ -20,6 +20,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -28,6 +29,7 @@ import org.primefaces.event.FileUploadEvent;
 @ManagedBean
 @SessionScoped
 public class TutorController {
+
     private Tutor cadastro;
 
     @PostConstruct
@@ -98,39 +100,45 @@ public class TutorController {
                 .getExternalContext().getSession(true))
                 .getAttribute("loginController")).logout();
     }
-    
-    public void upload(FileUploadEvent e) throws IOException{
+
+    public void upload(FileUploadEvent e) throws IOException {
         byte[] blob = new byte[(int) e.getFile().getSize()];
         e.getFile().getInputstream().read(blob);
-        
-        Tutor tutorLogado = tutorLogadoSession();
-        tutorLogado.setImagem(blob);
-        
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Imagem upada com sucesso."));
+        UploadedFile upFile = e.getFile();
+
+        if (upFile != null && !upFile.getFileName().isEmpty()) {
+            Tutor tutorLogado = tutorLogadoSession();
+            tutorLogado.setImagem(blob);
+            FacesMessage message = new FacesMessage("Successo!", upFile.getFileName() + " foi salva.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro.", "Não foi possível salvar a imagem.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
     }
-    
+
     public String getImagemTutor() {
         Tutor tutorLogado = tutorLogadoSession();
         byte[] blob = tutorLogado.getImagem();
         return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
     }
-    
+
     // retorna uma lista com as imagens dos tutores para o indexPet
     public List<String> getImagensTutores(List<TutorPet> tutores) {
         List<String> imagens = new ArrayList<>();
-        for(TutorPet tp : tutores) {
-           imagens.add(Base64.getEncoder().encodeToString(tp.getTutor().getImagem()));
+        for (TutorPet tp : tutores) {
+            imagens.add(Base64.getEncoder().encodeToString(tp.getTutor().getImagem()));
         }
-        
+
         return imagens;
     }
-    
+
     public String getGraphicImage() {
         Tutor tutorLogado = tutorLogadoSession();
         byte[] blob = tutorLogado.getImagem();
         return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
     }
-    
+
     private Tutor tutorLogadoSession() {
         return ((LoginController) ((HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(true))

@@ -22,7 +22,8 @@
                         <img src="data:image/jpeg;base64,#{tutorController.imagemTutor}" height="200"/>
                     </b:panel>
                 </c:if>
-                <p:fileUpload fileUploadListener="#{tutorController.upload}" mode="advanced" />
+                <p:fileUpload fileUploadListener="#{tutorController.upload}" mode="advanced" update="messages"/>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" />
                 <p:graphicImage id="imgOutputTutor" value="#{tutorController.graphicImage}"/>
                 <b:panelGrid columns="2">
                     <h:outputText value="Usuário"/>

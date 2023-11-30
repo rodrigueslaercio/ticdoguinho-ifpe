@@ -11,13 +11,34 @@
     <h:body>
         <ui:include src="menuTutor.xhtml" rendered="true"/>
         <b:form auto-update="true">
-            <b:panelGrid columns="2" colSpans="2,10">
+            <b:panelGrid columns="2" colSpans="2,10" style="position: relative;">
                 <b:panel style="width: 400px;">
                     <h:outputText value="#{petController.selection.nome}" style="font-size: 22pt; font-style: italic"/>
-                    <b:panel>
-                        <img src="data:image/jpeg;base64,#{petController.imagemPet}" width="300px" height="300px"
-                             style="border-radius: 50%"/>
+                    <b:panel style="position: relative;">
+                        <img class="imgPet" src="data:image/jpeg;base64,#{petController.imagemPet}" 
+                             style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;"/>
                     </b:panel>
+
+                    <c:choose>
+                        <c:when test="#{tutorController.getImagensTutores(petController.tutoresDoPet()).size() eq 2}">
+                            <div style="position: absolute; top: 60px; left: 40px; background: none; border: none">
+                                <img src="data:image/jpeg;base64, #{tutorController.getImagensTutores(petController.tutoresDoPet()).get(0)}"
+                                     style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;"/>
+                            </div>
+
+                            <div style="position: absolute; top: 60px; left: 140px; background: none; border: 0;">
+                                <img src="data:image/jpeg;base64, #{tutorController.getImagensTutores(petController.tutoresDoPet()).get(1)}"
+                                     style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;"/>
+                            </div>
+                        </c:when>
+                        
+                        <c:otherwise>
+                             <div style="position: absolute; top: 60px; left: 40px; background: none; border: none">
+                                 <img src="data:image/jpeg;base64, #{tutorController.imagemTutor}"
+                                     style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;"/>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
                     <b:panelGrid columns="2" colSpans="2,10">
                         <h:outputText value="Nome"/>
                         <h:outputText value="#{petController.selection.nome}"/>

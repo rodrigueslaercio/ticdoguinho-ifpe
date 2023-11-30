@@ -6,9 +6,11 @@
 package br.edu.ifpe.recife.controllers;
 
 import br.edu.ifpe.recife.model.classes.Tutor;
+import br.edu.ifpe.recife.model.classes.TutorPet;
 import br.edu.ifpe.recife.model.dao.ManagerDao;
 import br.edu.ifpe.recife.utils.PasswordSecurity;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -111,6 +113,16 @@ public class TutorController {
         Tutor tutorLogado = tutorLogadoSession();
         byte[] blob = tutorLogado.getImagem();
         return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
+    }
+    
+    // retorna uma lista com as imagens dos tutores para o indexPet
+    public List<String> getImagensTutores(List<TutorPet> tutores) {
+        List<String> imagens = new ArrayList<>();
+        for(TutorPet tp : tutores) {
+           imagens.add(Base64.getEncoder().encodeToString(tp.getTutor().getImagem()));
+        }
+        
+        return imagens;
     }
     
     public String getGraphicImage() {

@@ -16,8 +16,8 @@
                 <c:forEach items="#{petController.readAllPets()}" var="pet">
                     <b:panel title="#{pet.nome}" style="width: 300px;">
                         <b:commandLink action="indexPet.xhtml"> 
-                            <img src="data:image/jpeg;base64,#{petController.formatImagemIndex(pet.imagem)}" width="150" height="150"
-                             style="border-radius: 50%" />
+                            <img src="data:image/jpeg;base64,#{petController.formatImagemIndex(pet.imagem)}" 
+                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;"/>
                             <f:setPropertyActionListener value="#{pet}" target="#{petController.selection}"/>
                         </b:commandLink>
                     </b:panel>

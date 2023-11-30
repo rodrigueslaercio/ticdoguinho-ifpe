@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:b="http://bootsfaces.net/ui">
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <title>Index Pet</title>
         <style>
@@ -23,13 +24,33 @@
     </h:head>
     <h:body>
         <ui:include src="menuTutor.xhtml" rendered="true"/>
-        <b:panelGrid columns="1">
-            <panel>
-                <img class="adjust" src="data:image/jpeg;base64,#{petController.formatImagemIndex(petController.selection.imagem)}"
-                     height="300px"/>
-            </panel>
-        </b:panelGrid>
+        <b:form auto-update="true">
+            <b:panelGrid columns="2" colSpans="2,10">
+                <b:panel style="width: 400px;">
+                    <h:outputText value="#{petController.selection.nome}" style="font-size: 22pt; font-style: italic"/>
+                    <b:panel>
+                        <img src="data:image/jpeg;base64,#{petController.imagemPet}" width="300px" height="300px"
+                             style="border-radius: 50%"/>
+                    </b:panel>
+                    <b:panelGrid columns="2" colSpans="2,10">
+                        <h:outputText value="Nome"/>
+                        <h:outputText value="#{petController.selection.nome}"/>
 
+                        <c:choose>
+                            <c:when test="#{petController.tutoresDoPet().size() != 2}">
+                                <h:outputText value="Tutor"/>
+                            </c:when>
+                            <c:otherwise>
+                                <h:outputText value="Tutores"/>
+                            </c:otherwise>
+                        </c:choose>
+                        <ui:repeat value="#{petController.tutoresDoPet()}" var="tutor">
+                            <h:outputText value="#{tutor.tutor.usuario} "/>
+                        </ui:repeat>
+                    </b:panelGrid>
+                </b:panel>
+            </b:panelGrid>
+        </b:form>
     </h:body>
 </html>
 

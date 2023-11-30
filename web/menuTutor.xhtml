@@ -24,7 +24,7 @@
 
 
                 <b:navbarLinks pull="right" style="position: relative;">
-                    <c:if test="#{loginController.tutorLogado ne null}">
+                    <c:if test="#{not empty loginController.tutorLogado and not empty tutorController.imagemTutor}">
                         <img src="data:image/jpeg;base64,#{tutorController.imagemTutor}"
                              style="position: absolute; left: calc(-30px - 10px); top: 5px; width: 40px; height: 40px; object-fit: cover; border-radius: 50%;"/>
                     </c:if>

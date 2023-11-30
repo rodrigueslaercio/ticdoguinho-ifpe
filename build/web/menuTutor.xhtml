@@ -8,22 +8,26 @@
     </h:head>
     <h:body>
         <b:growl id="gro" delay="4000"/>
-        
+
         <c:if test="#{loginController.tutorLogado eq null}">
             <script>
                 location.href = 'login.xhtml'
             </script>
         </c:if>
-        
+
         <b:form id="formMenu">
             <b:navBar brand="Home" brandHref="indexTutor.xhtml" fluid="true">
                 <b:navbarLinks>
                     <b:navLink value="Cadastrar pet" href="cadastroPets.xhtml"/>
                     <b:navLink value="Ver meus pets" href="pets.xhtml"/>
                 </b:navbarLinks>
-                
-                
-                <b:navbarLinks pull="right">
+
+
+                <b:navbarLinks pull="right" style="position: relative;">
+                    <c:if test="#{loginController.tutorLogado ne null}">
+                        <img src="data:image/jpeg;base64,#{tutorController.imagemTutor}"
+                             style="position: absolute; left: calc(-30px - 10px); top: 5px; width: 40px; height: 40px; object-fit: cover; border-radius: 50%;"/>
+                    </c:if>
                     <b:dropMenu value="#{(loginController.tutorLogado ne null?loginController.tutorLogado.usuario:'')}">
                         <b:navLink value="Perfil" href="perfilTutor.xhtml"/>
                         <b:navLink value="Logout" onclick="location.href = 'login.xhtml';ajax:loginController.logout()"/>                        

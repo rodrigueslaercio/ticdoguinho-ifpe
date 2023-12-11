@@ -127,9 +127,10 @@ public class TutorController {
     public List<String> getImagensTutores(List<TutorPet> tutores) {
         List<String> imagens = new ArrayList<>();
         for (TutorPet tp : tutores) {
-            imagens.add(Base64.getEncoder().encodeToString(tp.getTutor().getImagem()));
+            byte[] blob = tp.getTutor().getImagem();
+            imagens.add(blob != null ? Base64.getEncoder().encodeToString(tp.getTutor().getImagem()) : "");
         }
-
+        
         return imagens;
     }
 
@@ -138,7 +139,7 @@ public class TutorController {
         byte[] blob = tutorLogado.getImagem();
         return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
     }
-
+    
     private Tutor tutorLogadoSession() {
         return ((LoginController) ((HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(true))

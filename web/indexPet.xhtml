@@ -4,60 +4,89 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:b="http://bootsfaces.net/ui"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Index Pet</title>
     </h:head>
     <h:body>
         <ui:include src="menuTutor.xhtml" rendered="true"/>
         <b:form auto-update="true">
-            <b:panelGrid columns="2" colSpans="2,10" style="position: relative;">
-                <b:panel style="width: 400px;">
-                    <h:outputText value="#{petController.selection.nome}" style="font-size: 22pt; font-style: italic"/>
-                    <b:panel style="position: relative;">
-                        <img class="imgPet" src="data:image/jpeg;base64,#{petController.imagemPet}" 
-                             style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;"/>
-                    </b:panel>
-                    
-                    <c:choose>
-                        <c:when test="#{tutorController.getImagensTutores(petController.tutoresDoPet()).size() eq 2}">
-                                <div style="position: absolute; top: 60px; left: 40px; background: none; border: none;">
-                                    <img src="data:image/jpeg;base64, #{tutorController.getImagensTutores(petController.tutoresDoPet()).get(0)}"
-                                         style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;"/>
-                                </div>
+            <div style="display: flex;">
+                <div style="width: 400px; margin-right: 20px;">
+                    <b:panelGrid columns="2" colSpans="2,10" style="position: relative;">
+                        <b:panel style="width: 400px;">
+                            <h:outputText value="#{petController.selection.nome}" style="font-size: 22pt; font-style: italic"/>
+                            <b:panel style="position: relative;">
+                                <img class="imgPet" src="data:image/jpeg;base64,#{petController.imagemPet}" 
+                                     style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;"/>
+                            </b:panel>
 
-                                <div style="position: absolute; top: 60px; left: 140px; background: none; border: none;">
-                                    <img src="data:image/jpeg;base64, #{tutorController.getImagensTutores(petController.tutoresDoPet()).get(1)}"
-                                         style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;"/>
-                                </div>
-                        </c:when>
+                            <c:choose>
+                                <c:when test="#{petController.tutoresDoPet() ne null and tutorController.getImagensTutores(petController.tutoresDoPet()).size() eq 2}">
+                                    <div style="position: absolute; top: 60px; left: 40px; background: none; border: none;">
+                                        <img src="data:image/jpeg;base64, #{tutorController.getImagensTutores(petController.tutoresDoPet()).get(0)}"
+                                             style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;"/>
+                                    </div>
 
-                        <c:otherwise>
-                            <div style="position: absolute; top: 60px; left: 40px; background: none; border: none">
-                                <img src="data:image/jpeg;base64, #{tutorController.imagemTutor}"
-                                     style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;"/>
-                            </div>
-                        </c:otherwise>
-                    </c:choose>
-                    <b:panelGrid columns="2" colSpans="2,10">
-                        <h:outputText value="Nome"/>
-                        <h:outputText value="#{petController.selection.nome}"/>
+                                    <div style="position: absolute; top: 60px; left: 140px; background: none; border: none;">
+                                        <img src="data:image/jpeg;base64, #{tutorController.getImagensTutores(petController.tutoresDoPet()).get(1)}"
+                                             style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;"/>
+                                    </div>
+                                </c:when>
 
-                        <c:choose>
-                            <c:when test="#{petController.tutoresDoPet().size() != 2}">
-                                <h:outputText value="Tutor"/>
-                            </c:when>
-                            <c:otherwise>
-                                <h:outputText value="Tutores"/>
-                            </c:otherwise>
-                        </c:choose>
-                        <ui:repeat value="#{petController.tutoresDoPet()}" var="tutor">
-                            <h:outputText value="#{tutor.tutor.usuario} "/>
-                        </ui:repeat>
+                                <c:otherwise>
+                                    <div style="position: absolute; top: 60px; left: 40px; background: none; border: none">
+                                        <img src="data:image/jpeg;base64, #{tutorController.imagemTutor}"
+                                             style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;"/>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
+                            <b:panelGrid columns="2" colSpans="2,10">
+                                <h:outputText value="Nome"/>
+                                <h:outputText value="#{petController.selection.nome}"/>
+
+                                <c:choose>
+                                    <c:when test="#{petController.tutoresDoPet().size() != 2}">
+                                        <h:outputText value="Tutor"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <h:outputText value="Tutores"/>
+                                    </c:otherwise>
+                                </c:choose>
+                                <ui:repeat value="#{petController.tutoresDoPet()}" var="tutor">
+                                    <h:outputText value="#{tutor.tutor.usuario} "/>
+                                </ui:repeat>
+                            </b:panelGrid>
+                            <b:commandButton value="Fazer um post" action="post.xhtml"/>
+                        </b:panel>
                     </b:panelGrid>
-                </b:panel>
-            </b:panelGrid>
+                </div>
+
+                <div style="text-align: center;">
+                    <b:panelGrid columns="1" style="text-align: center; margin-top: 50px; width: 450px;">
+                        <c:forEach items="#{videoBean.posts}" var="post" varStatus="loop">
+                            <b:panel style="margin-left: 20px;">
+                                <b:tabView>
+                                    <b:tab title="Video Pet">
+                                        <video controls='controls' style="width: 400px; height: 400px; display: block; margin: 0 auto;">
+                                            <source src="data:video/mp4;base64,#{videoBean.formatVideoToSrc(post.petVideo.video)}" type="video/mp4"/>
+                                        </video>
+                                    </b:tab>
+                                    <b:tab title="Video Tutor">
+                                        <video controls='controls' style="width: 400px; height: 400px; display: block; margin: 0 auto;">
+                                            <source src="data:video/mp4;base64,#{videoBean.formatVideoToSrc(post.tutorVideo.video)}" type="video/mp4"/>
+                                        </video>
+                                    </b:tab>
+                                </b:tabView>
+                            </b:panel>
+                        </c:forEach>
+                    </b:panelGrid>
+                </div>
+            </div>
         </b:form>
+
     </h:body>
 </html>
 

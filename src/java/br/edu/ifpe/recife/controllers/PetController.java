@@ -6,6 +6,7 @@
 package br.edu.ifpe.recife.controllers;
 
 import br.edu.ifpe.recife.model.classes.Pet;
+import br.edu.ifpe.recife.model.classes.Post;
 import br.edu.ifpe.recife.model.classes.Tutor;
 import br.edu.ifpe.recife.model.classes.TutorPet;
 import br.edu.ifpe.recife.model.dao.ManagerDao;
@@ -211,7 +212,7 @@ public class PetController {
         byte[] blob = this.cadastro.getImagem();
         return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
     }
-
+    
     public Pet getCadastro() {
         return cadastro;
     }

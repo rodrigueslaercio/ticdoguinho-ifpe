@@ -6,7 +6,6 @@
 package br.edu.ifpe.recife.controllers;
 
 import br.edu.ifpe.recife.model.classes.Pet;
-import br.edu.ifpe.recife.model.classes.Post;
 import br.edu.ifpe.recife.model.classes.Tutor;
 import br.edu.ifpe.recife.model.classes.TutorPet;
 import br.edu.ifpe.recife.model.dao.ManagerDao;
@@ -35,6 +34,7 @@ public class PetController {
 
     private Pet cadastro;
     private Pet selection;
+    private int petSearchCodigo;
 
     @PostConstruct
     public void init() {
@@ -145,6 +145,10 @@ public class PetController {
         return ManagerDao.getCurrentInstance().read("select tp from TutorPet tp where tp.pet.codigo = " + this.selection.getCodigo(), Pet.class);
     }
 
+    public List<TutorPet> tutoresDoSearchedPet() {
+        return ManagerDao.getCurrentInstance().read("select tp from TutorPet tp where tp.pet.codigo = " + fetchSearchedPet().getCodigo(), Pet.class);
+    }
+
     public boolean checkDuplicata(String nome) {
         List<Pet> petsAssociados = ManagerDao.getCurrentInstance().read("select p from Pet p join TutorPet tp where tp.tutor.codigo = " + tutorLogadoSession().getCodigo(), Pet.class);
 
@@ -202,6 +206,12 @@ public class PetController {
         return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
     }
 
+    // retorna a imagem do pet pesquisado
+    public String getImagemSearchedPet() {
+        byte[] blob = fetchSearchedPet().getImagem();
+        return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
+    }
+
     // retorna a imagem do pet no for each do index
     public String formatImagemIndex(byte[] blob) {
         return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
@@ -212,7 +222,17 @@ public class PetController {
         byte[] blob = this.cadastro.getImagem();
         return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
     }
-    
+
+    public List<Pet> searchPets(String petName) {
+        List<Pet> petsFound = ManagerDao.getCurrentInstance().read("select p from Pet p where p.nome = '" + petName + "'", Pet.class);
+
+        return petsFound;
+    }
+
+    public Pet fetchSearchedPet() {
+        return (Pet) ManagerDao.getCurrentInstance().read("select p from Pet p where p.codigo = " + this.petSearchCodigo, Pet.class).get(0);
+    }
+
     public Pet getCadastro() {
         return cadastro;
     }
@@ -227,6 +247,15 @@ public class PetController {
 
     public void setSelection(Pet selection) {
         this.selection = selection;
+    }
+
+
+    public int getPetSearchCodigo() {
+        return petSearchCodigo;
+    }
+
+    public void setPetSearchCodigo(int petSearchCodigo) {
+        this.petSearchCodigo = petSearchCodigo;
     }
 
     private Tutor tutorLogadoSession() {

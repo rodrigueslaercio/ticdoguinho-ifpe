@@ -12,9 +12,6 @@ import br.edu.ifpe.recife.model.classes.Tutor;
 import br.edu.ifpe.recife.model.classes.TutorVideo;
 import br.edu.ifpe.recife.model.dao.ManagerDao;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +35,7 @@ public class VideoBean {
     private Post post;
     private PetVideo petVideo;
     private TutorVideo tutorVideo;
-    
+
     @PostConstruct
     public void init() {
         this.post = new Post();
@@ -78,7 +75,6 @@ public class VideoBean {
                     .getExternalContext().getSession(true))
                     .getAttribute("loginController")).getTutorLogado();
 
-            
             this.tutorVideo.setVideo(blob);
             this.tutorVideo.setTutor(tutorLogado);
             this.post.setTutorVideo(tutorVideo);
@@ -95,13 +91,25 @@ public class VideoBean {
         Pet selection = ((PetController) ((HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(true))
                 .getAttribute("petController")).getSelection();
-        
+
         List<Post> videos = ManagerDao.getCurrentInstance().read("select p from "
-                + "Post p join fetch p.petVideo pv where pv.pet.codigo = " + selection.getCodigo() 
+                + "Post p join fetch p.petVideo pv where pv.pet.codigo = " + selection.getCodigo()
                 + " order by p.uploadDateTime DESC", Post.class);
 
         return videos;
 
+    }
+
+    public List<Post> getPostsSearchedPet() {
+        Pet searchedPet = ((PetController) ((HttpSession) FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(true))
+                .getAttribute("petController")).fetchSearchedPet();
+
+        List<Post> videos = ManagerDao.getCurrentInstance().read("select p from "
+                + "Post p join fetch p.petVideo pv where pv.pet.codigo = " + searchedPet.getCodigo()
+                + " order by p.uploadDateTime DESC", Post.class);
+        
+        return videos;
     }
 
     public String doPost() {

@@ -12,7 +12,7 @@
     </h:head>
     <h:body>
         <ui:include src="menuTutor.xhtml" rendered="true"/>
-        <b:form auto-update="true">
+        <b:form id="formIndexPet">
             <div style="display: flex;">
                 <div style="width: 400px; margin-right: 20px;">
                     <b:panelGrid columns="2" colSpans="2,10" style="position: relative;">
@@ -84,9 +84,28 @@
                         </c:forEach>
                     </b:panelGrid>
                 </div>
+
+                <div style=" margin-left: 100px; text-align: right;">
+                    <b:panelGrid columns="1" style="text-align: center; margin-top: 50px;" >
+                        <b:inputText value="#{pesquisa}" style="margin-right: 5px;" />
+                        <b:commandButton icon="search" />
+                        <br/>
+                        <c:if test="#{petController.searchPets(pesquisa).size() > 0}">
+                            <b:panel>
+                                <c:forEach items="#{petController.searchPets(pesquisa)}" var="pet">
+                                    <h:link value="#{pet.nome}" outcome="buscaPets.xhtml">
+                                        <f:param name="petCodigo" value="#{pet.codigo}" />
+                                    </h:link>
+                                </c:forEach>
+                            </b:panel>
+                        </c:if>
+
+                    </b:panelGrid>
+                </div>
             </div>
         </b:form>
 
     </h:body>
+
 </html>
 

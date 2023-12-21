@@ -12,9 +12,17 @@ import br.edu.ifpe.recife.model.classes.Tutor;
 import br.edu.ifpe.recife.model.classes.TutorVideo;
 import br.edu.ifpe.recife.model.dao.ManagerDao;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -114,12 +122,21 @@ public class VideoBean {
 
     public String doPost() {
         this.post.setUploadDateTime(new Date());
+        
         ManagerDao.getCurrentInstance().insert(this.petVideo);
         ManagerDao.getCurrentInstance().insert(this.tutorVideo);
         ManagerDao.getCurrentInstance().insert(this.post);
 
 
         return "indexPet";
+    }
+    
+    public String displayDate(Date date) {
+        SimpleDateFormat displayFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        String formattedDateTime = displayFormat.format(date);
+        
+        
+        return "Postado em " + formattedDateTime.replace(" ", " às ");
     }
 
     public String formatVideoToSrc(byte[] blob) {

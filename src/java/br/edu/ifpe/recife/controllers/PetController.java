@@ -35,6 +35,7 @@ public class PetController {
     private Pet cadastro;
     private Pet selection;
     private int petSearchCodigo;
+    private Pet searchedPet;
 
     @PostConstruct
     public void init() {
@@ -232,6 +233,36 @@ public class PetController {
     public Pet fetchSearchedPet() {
         return (Pet) ManagerDao.getCurrentInstance().read("select p from Pet p where p.codigo = " + this.petSearchCodigo, Pet.class).get(0);
     }
+    
+    public void follow() {
+        this.searchedPet = fetchSearchedPet();
+        
+        if (searchedPet != null) {
+            this.selection.getFollowing().add(this.searchedPet);
+            this.searchedPet.getFollowers().add(this.selection);
+            ManagerDao.getCurrentInstance().update(this.selection);
+            ManagerDao.getCurrentInstance().update(this.searchedPet);
+        }
+        
+    }
+    
+    // TODO
+    public void unfollow() {
+        
+    }
+    
+    
+    public boolean isAlreadyAFollower() {
+        this.searchedPet = fetchSearchedPet();
+        
+        for (Pet pet : this.selection.getFollowing()) {
+            if (pet.getCodigo() == this.searchedPet.getCodigo()) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
     public Pet getCadastro() {
         return cadastro;
@@ -257,6 +288,16 @@ public class PetController {
     public void setPetSearchCodigo(int petSearchCodigo) {
         this.petSearchCodigo = petSearchCodigo;
     }
+
+    public Pet getSearchedPet() {
+        return searchedPet;
+    }
+
+    public void setSearchedPet(Pet searchedPet) {
+        this.searchedPet = searchedPet;
+    }
+    
+    
 
     private Tutor tutorLogadoSession() {
         return ((LoginController) ((HttpSession) FacesContext.getCurrentInstance()

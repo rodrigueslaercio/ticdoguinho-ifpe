@@ -7,7 +7,7 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>BUSCA PETS</title>
+        <title>#{petController.searchedPet.nome}</title>
     </h:head>
     <h:body>
         <ui:include src="menuTutor.xhtml" rendered="true"/>
@@ -65,8 +65,17 @@
                                     <h:outputText value="#{tutor.tutor.usuario} "/>
                                 </ui:repeat>
                             </b:panelGrid>
-                            <!-- TODO  -->
-                            <b:commandButton value="Seguir" action="#"/>
+                            <h:outputText value="Seguindo #{petController.searchedPet.following.size()}" style="margin-right: 10px;"/>
+                            <h:outputText value="Seguidores #{petController.searchedPet.followers.size()}"/>
+                            <br/>
+                            <c:choose>
+                                <c:when test="#{petController.alreadyAFollower}">
+                                    <b:commandButton value="Deixar de Seguir" action="#{petController.unfollow()}"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <b:commandButton value="Seguir" action="#{petController.follow()}"/>
+                                </c:otherwise>
+                            </c:choose>
                         </b:panel>
                     </b:panelGrid>
                 </div>

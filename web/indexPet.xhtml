@@ -8,7 +8,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Index Pet</title>
+        <title>#{petController.selection.nome}</title>
     </h:head>
     <h:body>
         <ui:include src="menuTutor.xhtml" rendered="true"/>
@@ -59,6 +59,8 @@
                                     <h:outputText value="#{tutor.tutor.usuario} "/>
                                 </ui:repeat>
                             </b:panelGrid>
+                            <h:outputText value="Seguindo #{petController.selection.following.size()}" style="margin-right: 10px;"/>
+                            <h:outputText value="Seguidores #{petController.selection.followers.size()}"/><br/>
                             <b:commandButton value="Fazer um post" action="post.xhtml"/>
                         </b:panel>
                     </b:panelGrid>

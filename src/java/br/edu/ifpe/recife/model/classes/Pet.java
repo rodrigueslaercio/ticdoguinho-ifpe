@@ -5,12 +5,15 @@
  */
 package br.edu.ifpe.recife.model.classes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 
 /**
  *
@@ -27,6 +30,11 @@ public class Pet {
     private UUID codCompartilhamento = UUID.randomUUID();
     @Lob
     private byte[] imagem;
+    @ManyToMany(mappedBy = "following")
+    private List<Pet> followers = new ArrayList<>();
+    @ManyToMany
+    private List<Pet> following = new ArrayList<>();
+    
     
     public int getCodigo() {
         return codigo;
@@ -75,4 +83,22 @@ public class Pet {
     public void setImagem(byte[] imagem) {
         this.imagem = imagem;
     }
+
+    public List<Pet> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<Pet> followers) {
+        this.followers = followers;
+    }
+
+    public List<Pet> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(List<Pet> following) {
+        this.following = following;
+    }
+    
+    
 }

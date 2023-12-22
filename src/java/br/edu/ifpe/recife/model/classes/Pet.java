@@ -7,6 +7,7 @@ package br.edu.ifpe.recife.model.classes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,6 +22,7 @@ import javax.persistence.ManyToMany;
  */
 @Entity
 public class Pet {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int codigo;
@@ -34,8 +36,7 @@ public class Pet {
     private List<Pet> followers = new ArrayList<>();
     @ManyToMany
     private List<Pet> following = new ArrayList<>();
-    
-    
+
     public int getCodigo() {
         return codigo;
     }
@@ -99,6 +100,26 @@ public class Pet {
     public void setFollowing(List<Pet> following) {
         this.following = following;
     }
+
     
-    
+    // Para o remove() da List de followers/following funcionar
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Pet otherPet = (Pet) obj;
+
+        return Objects.equals(this.getCodigo(), otherPet.getCodigo());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getCodigo());
+    }
+
 }

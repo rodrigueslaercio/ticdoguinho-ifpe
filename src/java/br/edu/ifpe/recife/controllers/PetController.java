@@ -233,34 +233,39 @@ public class PetController {
     public Pet fetchSearchedPet() {
         return (Pet) ManagerDao.getCurrentInstance().read("select p from Pet p where p.codigo = " + this.petSearchCodigo, Pet.class).get(0);
     }
-    
+
     public void follow() {
         this.searchedPet = fetchSearchedPet();
-        
+
         if (searchedPet != null) {
             this.selection.getFollowing().add(this.searchedPet);
             this.searchedPet.getFollowers().add(this.selection);
             ManagerDao.getCurrentInstance().update(this.selection);
             ManagerDao.getCurrentInstance().update(this.searchedPet);
         }
-        
+
     }
-    
-    // TODO
+
     public void unfollow() {
-        
+        this.searchedPet = fetchSearchedPet();
+
+        if (searchedPet != null) {
+            this.selection.getFollowing().remove(this.searchedPet);
+            this.searchedPet.getFollowers().remove(this.selection);
+            ManagerDao.getCurrentInstance().update(this.selection);
+            ManagerDao.getCurrentInstance().update(this.searchedPet);
+        }
     }
-    
-    
+
     public boolean isAlreadyAFollower() {
         this.searchedPet = fetchSearchedPet();
-        
+
         for (Pet pet : this.selection.getFollowing()) {
             if (pet.getCodigo() == this.searchedPet.getCodigo()) {
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -280,7 +285,6 @@ public class PetController {
         this.selection = selection;
     }
 
-
     public int getPetSearchCodigo() {
         return petSearchCodigo;
     }
@@ -296,8 +300,6 @@ public class PetController {
     public void setSearchedPet(Pet searchedPet) {
         this.searchedPet = searchedPet;
     }
-    
-    
 
     private Tutor tutorLogadoSession() {
         return ((LoginController) ((HttpSession) FacesContext.getCurrentInstance()

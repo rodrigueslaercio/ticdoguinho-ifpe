@@ -18,11 +18,14 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -108,6 +111,24 @@ public class VideoBean {
 
     }
 
+    public List<Post> getFollowingPosts() {
+        Pet selection = ((PetController) ((HttpSession) FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(true))
+                .getAttribute("petController")).getSelection();
+
+        if (selection != null && !selection.getFollowing().isEmpty()) {
+            List<Pet> petsFollowing = selection.getFollowing();
+            String jpql = "select distinct p from Post p join p.petVideo pv join pv.pet pet where pet in :petsFollowing";
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("petsFollowing", petsFollowing);
+
+            List<Post> posts = ManagerDao.getCurrentInstance().read(jpql, Post.class, parameters);
+            return posts;
+        }
+
+        return null;
+    }
+
     public List<Post> getPostsSearchedPet() {
         Pet searchedPet = ((PetController) ((HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(true))
@@ -116,26 +137,24 @@ public class VideoBean {
         List<Post> videos = ManagerDao.getCurrentInstance().read("select p from "
                 + "Post p join fetch p.petVideo pv where pv.pet.codigo = " + searchedPet.getCodigo()
                 + " order by p.uploadDateTime DESC", Post.class);
-        
+
         return videos;
     }
 
     public String doPost() {
         this.post.setUploadDateTime(new Date());
-        
+
         ManagerDao.getCurrentInstance().insert(this.petVideo);
         ManagerDao.getCurrentInstance().insert(this.tutorVideo);
         ManagerDao.getCurrentInstance().insert(this.post);
 
-
         return "indexPet";
     }
-    
+
     public String displayDate(Date date) {
         SimpleDateFormat displayFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         String formattedDateTime = displayFormat.format(date);
-        
-        
+
         return "Postado em " + formattedDateTime.replace(" ", " às ");
     }
 

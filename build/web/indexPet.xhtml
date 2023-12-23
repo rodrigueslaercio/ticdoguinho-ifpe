@@ -66,27 +66,54 @@
                     </b:panelGrid>
                 </div>
 
-                <div style="text-align: center;">
-                    <b:panelGrid columns="1" style="text-align: center; margin-top: 50px; width: 450px;">
-                        <c:forEach items="#{videoBean.posts}" var="post" varStatus="loop">
-                            <b:panel style="margin-left: 20px;">
-                                <b:tabView>
-                                    <b:tab title="Video Pet">
-                                        <video controls='controls' style="width: 400px; height: 400px; display: block; margin: 0 auto;">
-                                            <source src="data:video/mp4;base64,#{videoBean.formatVideoToSrc(post.petVideo.video)}" type="video/mp4"/>
-                                        </video>
-                                    </b:tab>
-                                    <b:tab title="Video Tutor">
-                                        <video controls='controls' style="width: 400px; height: 400px; display: block; margin: 0 auto;">
-                                            <source src="data:video/mp4;base64,#{videoBean.formatVideoToSrc(post.tutorVideo.video)}" type="video/mp4"/>
-                                        </video>
-                                    </b:tab>
-                                </b:tabView>
-                                <h:outputText value="#{videoBean.displayDate(post.uploadDateTime)}" />
-                            </b:panel>
-                        </c:forEach>
-                    </b:panelGrid>
-                </div>
+                <b:tabView>
+                    <b:tab title="Seus videos">
+                        <div style="text-align: center;">
+                            <b:panelGrid columns="1" style="text-align: center; margin-top: 50px; width: 450px;">
+                                <c:forEach items="#{videoBean.posts}" var="post" varStatus="loop">
+                                    <b:panel style="margin-left: 20px;">
+                                        <b:tabView>
+                                            <b:tab title="Video Pet">
+                                                <video controls='controls' style="width: 400px; height: 400px; display: block; margin: 0 auto;">
+                                                    <source src="data:video/mp4;base64,#{videoBean.formatVideoToSrc(post.petVideo.video)}" type="video/mp4"/>
+                                                </video>
+                                            </b:tab>
+                                            <b:tab title="Video Tutor">
+                                                <video controls='controls' style="width: 400px; height: 400px; display: block; margin: 0 auto;">
+                                                    <source src="data:video/mp4;base64,#{videoBean.formatVideoToSrc(post.tutorVideo.video)}" type="video/mp4"/>
+                                                </video>
+                                            </b:tab>
+                                        </b:tabView>
+                                        <h:outputText value="#{videoBean.displayDate(post.uploadDateTime)}" />
+                                    </b:panel>
+                                </c:forEach>
+                            </b:panelGrid>
+                        </div>
+                    </b:tab>
+                    <b:tab title="Feed">
+                        <div style="text-align: center;">
+                            <b:panelGrid columns="1" style="text-align: center; margin-top: 50px; width: 450px;">
+                                <c:forEach items="#{videoBean.followingPosts}" var="post" varStatus="loop">
+                                    <b:panel style="margin-left: 20px;">
+                                        <b:tabView>
+                                            <b:tab title="Video Pet">
+                                                <video controls='controls' style="width: 400px; height: 400px; display: block; margin: 0 auto;">
+                                                    <source src="data:video/mp4;base64,#{videoBean.formatVideoToSrc(post.petVideo.video)}" type="video/mp4"/>
+                                                </video>
+                                            </b:tab>
+                                            <b:tab title="Video Tutor">
+                                                <video controls='controls' style="width: 400px; height: 400px; display: block; margin: 0 auto;">
+                                                    <source src="data:video/mp4;base64,#{videoBean.formatVideoToSrc(post.tutorVideo.video)}" type="video/mp4"/>
+                                                </video>
+                                            </b:tab>
+                                        </b:tabView>
+                                        <h:outputText value="#{videoBean.displayDate(post.uploadDateTime)}" />
+                                    </b:panel>
+                                </c:forEach>
+                            </b:panelGrid>
+                        </div>
+                    </b:tab>
+                </b:tabView>
 
                 <div style=" margin-left: 100px; text-align: right;">
                     <b:panelGrid columns="1" style="text-align: center; margin-top: 50px;" >

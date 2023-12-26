@@ -142,12 +142,20 @@ public class PetController {
         return "pets";
     }
 
+    // returna os tutores do pet na sessão
     public List<TutorPet> tutoresDoPet() {
         return ManagerDao.getCurrentInstance().read("select tp from TutorPet tp where tp.pet.codigo = " + this.selection.getCodigo(), Pet.class);
     }
 
+    // retorna os tutores do pet ao clicar na busca
     public List<TutorPet> tutoresDoSearchedPet() {
         return ManagerDao.getCurrentInstance().read("select tp from TutorPet tp where tp.pet.codigo = " + fetchSearchedPet().getCodigo(), Pet.class);
+    }
+    
+    
+    // retorna os tutores do pet filtrados na pesquisa
+    public List<TutorPet> tutoresDoFilterPet(Pet pet) {
+        return ManagerDao.getCurrentInstance().read("select tp from TutorPet tp where tp.pet.codigo = " + pet.getCodigo(), Pet.class);
     }
 
     public boolean checkDuplicata(String nome) {
@@ -204,6 +212,12 @@ public class PetController {
     // retorna a imagem do pet
     public String getImagemPet() {
         byte[] blob = this.selection.getImagem();
+        return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
+    }
+    
+    // retorna a imagem do pet filtrado na lista de pesquisa
+    public String imagemFilterPet(Pet pet) {
+        byte[] blob = pet.getImagem();
         return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
     }
 

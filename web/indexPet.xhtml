@@ -109,32 +109,57 @@
                                         </b:tabView>
                                         <h:outputText value="#{videoBean.displayDate(post.uploadDateTime)}" />
                                     </b:panel>
-                                </c:forEach>
+                                </c:forEach>    
                             </b:panelGrid>
                         </div>
                     </b:tab>
                 </b:tabView>
 
-                <div style=" margin-left: 100px; text-align: right;">
-                    <b:panelGrid columns="1" style="text-align: center; margin-top: 50px;" >
-                        <b:inputText value="#{pesquisa}" style="margin-right: 5px;" />
+                <div style="margin-left: 100px; text-align: right;">
+                    <b:panelGrid columns="1" style="text-align: center; margin-top: 50px;">
+                        <b:inputText placeholder="Buscar" value="#{pesquisa}" style="margin-right: 5px;" />
                         <b:commandButton icon="search" />
                         <br/>
                         <c:if test="#{petController.searchPets(pesquisa).size() > 0}">
                             <b:panel>
                                 <c:forEach items="#{petController.searchPets(pesquisa)}" var="pet">
-                                    <h:link value="#{pet.nome}" outcome="buscaPets.xhtml">
-                                        <f:param name="petCodigo" value="#{pet.codigo}" />
-                                    </h:link>
+                                    <div style="display: flex; align-items: center;">
+                                        <div>
+                                            <img class="imgPet" src="data:image/jpeg;base64,#{petController.imagemFilterPet(pet)}" 
+                                                 style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%;"/>
+                                            <c:choose>
+                                                <c:when test="#{petController.tutoresDoFilterPet(pet) ne null and tutorController.getImagensTutores(petController.tutoresDoFilterPet(pet)).size() eq 2}">
+                                                    <div style="position: relative; top: -70px; left: 40px; background: none; border: none;">
+                                                        <img src="data:image/jpeg;base64, #{tutorController.getImagensTutores(petController.tutoresDoFilterPet(pet)).get(0)}"
+                                                             style="width: 30px; height: 30px; object-fit: cover; border-radius: 50%;"/>
+                                                    </div>
+
+                                                    <div style="position: relative; top: -60px; left: 40px; background: none; border: none;">
+                                                        <img src="data:image/jpeg;base64, #{tutorController.getImagensTutores(petController.tutoresDoFilterPet(pet)).get(1)}"
+                                                             style="width: 30px; height: 30px; object-fit: cover; border-radius: 50%;"/>
+                                                    </div>
+                                                </c:when>
+
+                                                <c:otherwise>
+                                                    <div style="position: relative; top: -60px; left: 40px; background: none; border: none">
+                                                        <img src="data:image/jpeg;base64,#{tutorController.getImagensTutores(petController.tutoresDoFilterPet(pet)).get(0)}"
+                                                             style="width: 30px; height: 30px; object-fit: cover; border-radius: 50%;"/>
+                                                    </div>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </div>
+                                        <h:link value="#{pet.nome}" outcome="buscaPets.xhtml" style="margin-left: 30px; margin-bottom: 40px">
+                                            <f:param name="petCodigo" value="#{pet.codigo}" />
+                                        </h:link>
+                                    </div>
+                                    <br/>
                                 </c:forEach>
                             </b:panel>
                         </c:if>
-
                     </b:panelGrid>
                 </div>
             </div>
         </b:form>
-
     </h:body>
 
 </html>

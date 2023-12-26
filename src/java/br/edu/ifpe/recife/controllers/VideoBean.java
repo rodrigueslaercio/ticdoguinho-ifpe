@@ -12,19 +12,11 @@ import br.edu.ifpe.recife.model.classes.Tutor;
 import br.edu.ifpe.recife.model.classes.TutorVideo;
 import br.edu.ifpe.recife.model.dao.ManagerDao;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -118,7 +110,7 @@ public class VideoBean {
 
         if (selection != null && !selection.getFollowing().isEmpty()) {
             List<Pet> petsFollowing = selection.getFollowing();
-            String jpql = "select distinct p from Post p join p.petVideo pv join pv.pet pet where pet in :petsFollowing";
+            String jpql = "select distinct p from Post p join p.petVideo pv join pv.pet pet where pet in :petsFollowing order by p.uploadDateTime DESC";
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("petsFollowing", petsFollowing);
 

@@ -20,6 +20,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpSession;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -57,7 +58,15 @@ public class PetController {
 
             return "cadastroPets";
         }
+       
+        if (checkUsernameInUse(this.cadastro.getUsername())) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Username já cadastrado", ""));
+            this.cadastro = new Pet();
 
+            return "cadastroPets";
+        }
+        
         ManagerDao.getCurrentInstance().insert(this.cadastro);
         ManagerDao.getCurrentInstance().insert(tutorPet);
 
@@ -164,6 +173,25 @@ public class PetController {
         String jpql = "select p from Pet p where p.nome = :nome";
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("nome", nome);
+        List<Pet> petsComMesmoNome = ManagerDao.getCurrentInstance().read(jpql, Pet.class, parameters);
+
+        for (Pet petAssociado : petsAssociados) {
+            for (Pet petComMesmoNome : petsComMesmoNome) {
+                if (petAssociado.getNome().equals(petComMesmoNome.getNome())) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    
+    public boolean checkUsernameInUse(String username) {
+        List<Pet> petsAssociados = ManagerDao.getCurrentInstance().read("select p from Pet p join TutorPet tp where tp.tutor.codigo = " + tutorLogadoSession().getCodigo(), Pet.class);
+
+        String jpql = "select p from Pet p where p.username = :username";
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("username", username);
         List<Pet> petsComMesmoNome = ManagerDao.getCurrentInstance().read(jpql, Pet.class, parameters);
 
         for (Pet petAssociado : petsAssociados) {

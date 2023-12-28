@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,6 +28,8 @@ public class Pet {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int codigo;
     private String nome;
+    @Column(unique = true)
+    private String username;
     private String mesAnoNascimento;
     private String porte;
     private UUID codCompartilhamento = UUID.randomUUID();
@@ -52,6 +55,15 @@ public class Pet {
     public void setNome(String nome) {
         this.nome = nome;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    
 
     public String getMesAnoNascimento() {
         return mesAnoNascimento;
@@ -101,7 +113,6 @@ public class Pet {
         this.following = following;
     }
 
-    
     // Para o remove() da List de followers/following funcionar
     @Override
     public boolean equals(Object obj) {

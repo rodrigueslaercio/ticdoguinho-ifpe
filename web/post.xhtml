@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:b="http://bootsfaces.net/ui">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Postagem</title>
     </h:head>
     <ui:include src="menuTutor.xhtml" rendered="true"/>
     <h:body>
@@ -14,7 +14,9 @@
                   closeOnEscape="false" resizable="false" modal="false"
                   visible="true" position="center" header="Fazer post para #{petController.selection.nome}" height="350" width="800">
             <b:form id="formPets" enctype="multipart/form-data">
+                <h:outputText value="Video do Pet"/>
                 <p:fileUpload fileUploadListener="#{videoBean.uploadVideoPet}" update="messages"/>
+                <h:outputText value="Video do Tutor"/>
                 <p:fileUpload fileUploadListener="#{videoBean.uploadVideoTutor}" update="messages"/>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" />
 

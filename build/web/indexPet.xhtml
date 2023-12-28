@@ -71,6 +71,11 @@
                         <div style="text-align: center;">
                             <b:panelGrid columns="1" style="text-align: center; margin-top: 50px; width: 450px;">
                                 <c:forEach items="#{videoBean.posts}" var="post" varStatus="loop">
+                                    <b:panelGrid columns="2" colSpans="2, 10">
+                                        <img class="imgPet" src="data:image/jpeg;base64,#{petController.imagemPet}" 
+                                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"/>
+                                        <h:outputText style="font-weight: bold; margin-left: -300px;" value="#{petController.selection.nome}"/>
+                                    </b:panelGrid>
                                     <b:panel style="margin-left: 20px;">
                                         <b:tabView>
                                             <b:tab title="Video Pet">
@@ -94,6 +99,13 @@
                         <div style="text-align: center;">
                             <b:panelGrid columns="1" style="text-align: center; margin-top: 50px; width: 450px;">
                                 <c:forEach items="#{videoBean.followingPosts}" var="post" varStatus="loop">
+                                    <b:panelGrid columns="2" colSpans="2, 10">
+                                        <img class="imgPet" src="data:image/jpeg;base64,#{petController.imagemFilterPet(post.petVideo.pet)}" 
+                                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"/>
+                                        <h:link value="#{post.petVideo.pet.nome}" outcome="buscaPets.xhtml" style="margin-left: -300px; font-weight: bold;">
+                                            <f:param name="petCodigo" value="#{post.petVideo.pet.codigo}" />
+                                        </h:link>
+                                    </b:panelGrid>
                                     <b:panel style="margin-left: 20px;">
                                         <b:tabView>
                                             <b:tab title="Video Pet">

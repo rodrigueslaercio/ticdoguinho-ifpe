@@ -108,6 +108,15 @@
                                         </video>
                                     </b:tab>
                                 </b:tabView>
+                                <c:choose>
+                                    <c:when test="#{post.likes.contains(petController.selection)}">
+                                        <b:commandLink action="#{petController.dislike(post)}" icon-awesome="fas fa-thumbs-down"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <b:commandLink action="#{petController.like(post)}" icon-awesome="fas fa-thumbs-up"/>
+                                    </c:otherwise>
+                                </c:choose>
+                                <h:outputText value="#{post.likes.size()}"/><br/>
                                 <h:outputText value="#{videoBean.displayDate(post.uploadDateTime)}" />
                             </b:panel>
                         </c:forEach>

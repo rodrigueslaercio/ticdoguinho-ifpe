@@ -142,7 +142,7 @@ public class VideoBean {
 
         return "indexPet";
     }
-
+    
     public String displayDate(Date date) {
         SimpleDateFormat displayFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         String formattedDateTime = displayFormat.format(date);

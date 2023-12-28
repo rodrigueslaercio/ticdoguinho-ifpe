@@ -7,6 +7,8 @@ package br.edu.ifpe.recife.model.classes;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +17,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -42,6 +46,10 @@ public class Post {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(columnDefinition = "DATETIME")
     private Date uploadDateTime;
+    
+    @ManyToMany
+    @JoinTable(name = "post_likes", joinColumns = @JoinColumn(name = "post_id"), inverseJoinColumns = @JoinColumn(name = "pet_id"))
+    private List<Pet> likes;
 
     public int getId() {
         return id;
@@ -67,7 +75,6 @@ public class Post {
         this.petVideo = petVideo;
     }
     
-    
 
     public Date getUploadDateTime() {
         return uploadDateTime;
@@ -76,4 +83,33 @@ public class Post {
     public void setUploadDateTime(Date uploadDateTime) {
         this.uploadDateTime = uploadDateTime;
     }
+
+    public List<Pet> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<Pet> likes) {
+        this.likes = likes;
+    }
+    
+    // Para o remove() da List de likes funcionar
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Pet otherPet = (Pet) obj;
+
+        return Objects.equals(this.getId(), otherPet.getCodigo());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getId());
+    }
+    
 }

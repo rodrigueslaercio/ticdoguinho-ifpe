@@ -6,6 +6,7 @@
 package br.edu.ifpe.recife.controllers;
 
 import br.edu.ifpe.recife.model.classes.Pet;
+import br.edu.ifpe.recife.model.classes.Post;
 import br.edu.ifpe.recife.model.classes.Tutor;
 import br.edu.ifpe.recife.model.classes.TutorPet;
 import br.edu.ifpe.recife.model.dao.ManagerDao;
@@ -309,6 +310,16 @@ public class PetController {
         }
 
         return false;
+    }
+    
+    public void like(Post post) {
+        post.getLikes().add(this.selection);
+        ManagerDao.getCurrentInstance().update(post);
+    }
+    
+    public void dislike(Post post) {
+        post.getLikes().remove(this.selection);
+        ManagerDao.getCurrentInstance().update(post);
     }
 
     public Pet getCadastro() {

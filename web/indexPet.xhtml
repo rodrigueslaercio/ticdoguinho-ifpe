@@ -107,7 +107,7 @@
                                                 <b:commandLink action="#{petController.like(post)}" icon-awesome="fas fa-thumbs-up"/>
                                             </c:otherwise>
                                         </c:choose>
-                                         <h:outputText value="#{post.likes.size()}"/><br/>
+                                        <h:outputText value="#{post.likes.size()}"/><br/>
                                         <h:outputText value="#{videoBean.displayDate(post.uploadDateTime)}" />
                                     </b:panel>
                                 </c:forEach>
@@ -195,9 +195,16 @@
                                                 </c:otherwise>
                                             </c:choose>
                                         </div>
-                                        <h:link value="#{pet.nome}" outcome="buscaPets.xhtml" style="margin-left: 30px; margin-bottom: 40px">
-                                            <f:param name="petCodigo" value="#{pet.codigo}" />
-                                        </h:link>
+                                        <b:panelGrid columns="2" colSpans="12">
+                                            <b:column>
+                                                <h:link value="#{pet.nome}" outcome="buscaPets.xhtml" style="margin-left: 30px; margin-bottom: 100px;">
+                                                    <f:param name="petCodigo" value="#{pet.codigo}" />
+                                                </h:link>
+                                            </b:column>
+                                            <b:column>
+                                                <h:outputText style="font-weight: lighter;" value="@#{pet.username}"/>
+                                            </b:column>
+                                        </b:panelGrid>
                                     </div>
                                     <br/>
                                 </c:forEach>

@@ -5,6 +5,7 @@
  */
 package br.edu.ifpe.recife.controllers;
 
+import br.edu.ifpe.recife.model.classes.Pet;
 import br.edu.ifpe.recife.model.classes.Tutor;
 import br.edu.ifpe.recife.model.classes.TutorPet;
 import br.edu.ifpe.recife.model.dao.ManagerDao;
@@ -138,6 +139,18 @@ public class TutorController {
         Tutor tutorLogado = tutorLogadoSession();
         byte[] blob = tutorLogado.getImagem();
         return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
+    }
+    
+    public boolean isPetDoTutor(Pet pet) {
+        List<Pet> pets = ManagerDao.getCurrentInstance().read("select p from TutorPet tp join tp.pet p where tp.tutor.codigo = " + tutorLogadoSession().getCodigo(), Pet.class);
+        
+        for (int i = 0; i < pets.size(); i++) {
+            if(pets.get(i).getCodigo() == pet.getCodigo()) {
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     private Tutor tutorLogadoSession() {

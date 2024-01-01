@@ -62,8 +62,8 @@
                                     <h:outputText value="#{tutor.tutor.usuario} "/>
                                 </ui:repeat>
                             </b:panelGrid>
-                            <h:outputText value="Seguindo #{petController.selection.following.size()}" style="margin-right: 10px;"/>
-                            <h:outputText value="Seguidores #{petController.selection.followers.size()}"/><br/>
+                            <a style="color: inherit; text-decoration: none;" href="#followingmodal" data-toggle="modal"><h:outputText value="Seguindo #{petController.selection.following.size()}" style="margin-right: 10px;"/></a>
+                            <a style="color: inherit; text-decoration: none;" href="#followersmodal" data-toggle="modal"><h:outputText value="Seguidores #{petController.selection.followers.size()}"/></a><br/>
                             <b:commandButton value="Fazer um post" action="post.xhtml"/>
                         </b:panel>
                     </b:panelGrid>
@@ -213,8 +213,40 @@
                     </b:panelGrid>
                 </div>
             </div>
-        </b:form>
-    </h:body>
 
+        </b:form>
+
+        <b:modal id="followingmodal" title="Seguindo">
+            <b:panelGrid columns="2" colSpans="12"> 
+                <c:forEach items="#{petController.selection.following}" var="pet">
+                    <b:column>
+                        <img class="imgPet" src="data:image/jpeg;base64,#{petController.imagemFilterPet(pet)}" 
+                             style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%;"/>
+                        <h:link value="#{pet.nome} " outcome="buscaPets.xhtml">
+                            <f:param name="petCodigo" value="#{pet.codigo}" />
+                        </h:link>
+                        <h:outputText style="font-weight: lighter;" value="@#{pet.username}"/>
+                        <hr/>
+                    </b:column>
+                </c:forEach>
+            </b:panelGrid>
+        </b:modal>
+
+        <b:modal id="followersmodal" title="Seguidores">
+            <b:panelGrid columns="2" colSpans="12"> 
+                <c:forEach items="#{petController.selection.followers}" var="pet">
+                    <b:column>
+                        <img class="imgPet" src="data:image/jpeg;base64,#{petController.imagemFilterPet(pet)}" 
+                             style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%;"/>
+                        <h:link value="#{pet.nome} " outcome="buscaPets.xhtml">
+                            <f:param name="petCodigo" value="#{pet.codigo}" />
+                        </h:link>
+                        <h:outputText style="font-weight: lighter;" value="@#{pet.username}"/>
+                        <hr/>
+                    </b:column>
+                </c:forEach>
+            </b:panelGrid>
+        </b:modal>
+    </h:body>
 </html>
 

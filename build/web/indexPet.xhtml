@@ -64,7 +64,7 @@
                             </b:panelGrid>
                             <a style="color: inherit; text-decoration: none;" href="#followingmodal" data-toggle="modal"><h:outputText value="Seguindo #{petController.selection.following.size()}" style="margin-right: 10px;"/></a>
                             <a style="color: inherit; text-decoration: none;" href="#followersmodal" data-toggle="modal"><h:outputText value="Seguidores #{petController.selection.followers.size()}"/></a><br/>
-                            <b:commandButton value="Fazer um post" action="post.xhtml"/>
+                            <b:button  value="Fazer um post" onclick="$('.modalPostClass').modal()"/>
                         </b:panel>
                     </b:panelGrid>
                 </div>
@@ -246,6 +246,18 @@
                     </b:column>
                 </c:forEach>
             </b:panelGrid>
+        </b:modal>
+
+        <b:modal id="postmodal" title="Fazer um post" styleClass="modalPostClass">
+                <b:form id="formPets" enctype="multipart/form-data">
+                    <h:outputText value="Video do Pet"/>
+                    <p:fileUpload fileUploadListener="#{videoBean.uploadVideoPet}" update="messages"/>
+                    <h:outputText value="Video do Tutor"/>
+                    <p:fileUpload fileUploadListener="#{videoBean.uploadVideoTutor}" update="messages"/>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" />
+
+                    <b:commandButton value="Postar" action="#{videoBean.doPost()}" ajax="false"/>
+                </b:form>
         </b:modal>
     </h:body>
 </html>

@@ -107,7 +107,13 @@
                                                 <b:commandLink action="#{petController.like(post)}" icon-awesome="fas fa-thumbs-up"/>
                                             </c:otherwise>
                                         </c:choose>
-                                        <h:outputText value="#{post.likes.size()}"/><br/>
+                                        <h:outputText value="#{post.likes.size()}"/>
+                                        <h:link outcome="postagem.xhtml">
+                                            <b:iconAwesome value="fas fa-comment"/>
+                                            <f:param name="postId" value="#{post.id}" />
+                                        </h:link>
+                                        <h:outputText value="#{post.comentarios.size()}"/>
+                                        <br/>
                                         <h:outputText value="#{videoBean.displayDate(post.uploadDateTime)}" />
                                     </b:panel>
                                 </c:forEach>
@@ -153,7 +159,13 @@
                                                 <b:commandLink action="#{petController.like(post)}" icon-awesome="fas fa-thumbs-up"/>
                                             </c:otherwise>
                                         </c:choose>
-                                        <h:outputText value="#{post.likes.size()}"/><br/>
+                                        <h:outputText value="#{post.likes.size()}"/>
+                                        <h:link outcome="postagem.xhtml">
+                                            <b:iconAwesome value="fas fa-comment"/>
+                                            <f:param name="postId" value="#{post.id}" />
+                                        </h:link>
+                                        <h:outputText value="#{post.comentarios.size()}"/>
+                                        <br/>
                                         <h:outputText value="#{videoBean.displayDate(post.uploadDateTime)}" />
                                     </b:panel>
                                 </c:forEach>    
@@ -249,15 +261,15 @@
         </b:modal>
 
         <b:modal id="postmodal" title="Fazer um post" styleClass="modalPostClass">
-                <b:form id="formPets" enctype="multipart/form-data">
-                    <h:outputText value="Video do Pet"/>
-                    <p:fileUpload fileUploadListener="#{videoBean.uploadVideoPet}" update="messages"/>
-                    <h:outputText value="Video do Tutor"/>
-                    <p:fileUpload fileUploadListener="#{videoBean.uploadVideoTutor}" update="messages"/>
-                    <p:messages id="messages" showDetail="true" autoUpdate="true" />
+            <b:form id="formPostPets" enctype="multipart/form-data">
+                <h:outputText value="Video do Pet"/>
+                <p:fileUpload fileUploadListener="#{videoBean.uploadVideoPet}" update="messages"/>
+                <h:outputText value="Video do Tutor"/>
+                <p:fileUpload fileUploadListener="#{videoBean.uploadVideoTutor}" update="messages"/>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" />
 
-                    <b:commandButton value="Postar" action="#{videoBean.doPost()}" ajax="false"/>
-                </b:form>
+                <b:commandButton value="Postar" action="#{videoBean.doPost()}" ajax="false"/>
+            </b:form>
         </b:modal>
     </h:body>
 </html>

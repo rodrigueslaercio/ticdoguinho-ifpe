@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Postagem</title>
+    </h:head>
+    <h:body>
+        <ui:include src="menuTutor.xhtml" rendered="true"/>
+        <f:view>
+            <f:metadata>
+                <f:viewParam name="postId" value="#{videoBean.postId}" />
+            </f:metadata>
+        </f:view>
+
+
+        <b:form>
+            <div style="display: flex; justify-content: center; align-items: center; ">
+                <b:panelGrid columns="1" style="text-align: center; margin-top: 50px; width: 450px;">
+                    <b:panelGrid columns="3" colSpans="12">
+                        <b:column>
+                            <img class="imgPet" src="data:image/jpeg;base64,#{petController.imagemFilterPet(videoBean.fetchPost().petVideo.pet)}" 
+                                 style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"/>
+                        </b:column>
+                        <b:column>
+                            <h:outputText style="font-weight: bold;" value="#{videoBean.fetchPost().petVideo.pet.nome}"/>
+                        </b:column>
+                        <b:column>
+                            <h:outputText style="font-weight: lighter;" value="@#{videoBean.fetchPost().petVideo.pet.username}"/>
+                        </b:column>
+                    </b:panelGrid>
+                    <b:panel style="margin-left: 20px;">
+                        <b:tabView>
+                            <b:tab title="Video Pet">
+                                <video controls='controls' style="width: 400px; height: 400px; display: block; margin: 0 auto;">
+                                    <source src="data:video/mp4;base64,#{videoBean.formatVideoToSrc(videoBean.fetchPost().petVideo.video)}" type="video/mp4"/>
+                                </video>
+                            </b:tab>
+                            <b:tab title="Video Tutor">
+                                <video controls='controls' style="width: 400px; height: 400px; display: block; margin: 0 auto;">
+                                    <source src="data:video/mp4;base64,#{videoBean.formatVideoToSrc(videoBean.fetchPost().tutorVideo.video)}" type="video/mp4"/>
+                                </video>
+                            </b:tab>
+                        </b:tabView>
+                        <c:choose>
+                            <c:when test="#{videoBean.fetchPost().likes.contains(petController.selection)}">
+                                <b:commandLink action="#{petController.dislike(videoBean.fetchPost())}" icon-awesome="fas fa-thumbs-down"/>
+                            </c:when>
+                            <c:otherwise>
+                                <b:commandLink action="#{petController.like(videoBean.fetchPost())}" icon-awesome="fas fa-thumbs-up"/>
+                            </c:otherwise>
+                        </c:choose>
+                        <h:outputText value="#{videoBean.fetchPost().likes.size()}"/>
+                        <h:link outcome="postagem.xhtml">
+                            <b:iconAwesome value="fas fa-comment"/>
+                            <f:param name="postId" value="#{videoBean.fetchPost().id}" />
+                        </h:link>
+                        <h:outputText value="#{videoBean.fetchPostComentarios().size()}"/>
+                        <br/>
+                        <h:outputText value="#{videoBean.displayDate(videoBean.fetchPost().uploadDateTime)}" />
+                        <div>
+                            <img class="imgPet" src="data:image/jpeg;base64,#{petController.imagemPet}" 
+                                         style="width: 30px; height: 30px; object-fit: cover; border-radius: 50%; vertical-align: top;"/>
+                        <h:inputTextarea value="#{texto}" style="width: 350px;"/>
+                        <b:commandButton value="Responder" action="#{videoBean.doComentario(texto)}"/>
+                        </div>
+                        <b:panelGrid columns="2" colSpans="2, 10">
+                            <c:forEach items="#{videoBean.fetchPostComentarios()}" var="comment">
+                                <b:panel style="display: inline-block; width: 400px;">
+                                    <img class="imgPet" src="data:image/jpeg;base64,#{petController.imagemFilterPet(comment.autor)}" 
+                                         style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"/>
+                                    <h:outputText value="@#{comment.autor.username}"/>
+                                    <div>
+                                        <h:outputText value="#{comment.texto}"/>
+                                    </div>
+                                    <h:outputText style="font-size: smaller;" value="#{videoBean.displayDateComments(comment.data)}"/>
+                                </b:panel>
+                                <br/>
+                            </c:forEach>
+                        </b:panelGrid>
+                    </b:panel>
+                </b:panelGrid>
+            </div>
+        </b:form>
+
+
+    </h:body>
+</html>
+

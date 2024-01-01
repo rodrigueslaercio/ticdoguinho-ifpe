@@ -118,7 +118,13 @@
                                         <b:commandLink action="#{petController.like(post)}" icon-awesome="fas fa-thumbs-up"/>
                                     </c:otherwise>
                                 </c:choose>
-                                <h:outputText value="#{post.likes.size()}"/><br/>
+                                <h:outputText value="#{post.likes.size()}"/>
+                                <h:link outcome="postagem.xhtml">
+                                    <b:iconAwesome value="fas fa-comment"/>
+                                    <f:param name="postId" value="#{post.id}" />
+                                </h:link>
+                                <h:outputText value="#{post.comentarios.size()}"/>
+                                <br/>
                                 <h:outputText value="#{videoBean.displayDate(post.uploadDateTime)}" />
                             </b:panel>
                         </c:forEach>

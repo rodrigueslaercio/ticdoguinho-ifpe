@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,6 +22,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,10 +33,11 @@ import javax.persistence.TemporalType;
  */
 @Entity
 public class Post {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    
     @OneToOne
     @JoinColumn(name = "tutor_video_id")
     private TutorVideo tutorVideo;
@@ -42,14 +45,17 @@ public class Post {
     @OneToOne
     @JoinColumn(name = "pet_video_id")
     private PetVideo petVideo;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(columnDefinition = "DATETIME")
     private Date uploadDateTime;
-    
+
     @ManyToMany
     @JoinTable(name = "post_likes", joinColumns = @JoinColumn(name = "post_id"), inverseJoinColumns = @JoinColumn(name = "pet_id"))
     private List<Pet> likes;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Comentario> comentarios;
 
     public int getId() {
         return id;
@@ -58,7 +64,7 @@ public class Post {
     public void setId(int id) {
         this.id = id;
     }
-
+    
     public TutorVideo getTutorVideo() {
         return tutorVideo;
     }
@@ -74,7 +80,6 @@ public class Post {
     public void setPetVideo(PetVideo petVideo) {
         this.petVideo = petVideo;
     }
-    
 
     public Date getUploadDateTime() {
         return uploadDateTime;
@@ -91,7 +96,15 @@ public class Post {
     public void setLikes(List<Pet> likes) {
         this.likes = likes;
     }
-    
+
+    public List<Comentario> getComentarios() {
+        return comentarios;
+    }
+
+    public void setComentarios(List<Comentario> comentarios) {
+        this.comentarios = comentarios;
+    }
+
     // Para o remove() da List de likes funcionar
     @Override
     public boolean equals(Object obj) {
@@ -111,5 +124,5 @@ public class Post {
     public int hashCode() {
         return Objects.hash(this.getId());
     }
-    
+
 }

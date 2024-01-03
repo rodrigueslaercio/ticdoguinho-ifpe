@@ -260,12 +260,12 @@
             </b:panelGrid>
         </b:modal>
 
-        <b:modal id="postmodal" title="Fazer um post" styleClass="modalPostClass">
+        <b:modal id="postmodal" title="Fazer um post" styleClass="modalPostClass" size="modal-lg">
             <b:form id="formPostPets" enctype="multipart/form-data">
                 <h:outputText value="Video do Pet"/>
-                <p:fileUpload fileUploadListener="#{videoBean.uploadVideoPet}" update="messages"/>
+                <p:fileUpload fileUploadListener="#{videoBean.uploadVideoPet}" update="messages" style="width: 850px;"/>
                 <h:outputText value="Video do Tutor"/>
-                <p:fileUpload fileUploadListener="#{videoBean.uploadVideoTutor}" update="messages"/>
+                <p:fileUpload fileUploadListener="#{videoBean.uploadVideoTutor}" update="messages" style="width: 850px;"/>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" />
 
                 <b:commandButton value="Postar" action="#{videoBean.doPost()}" ajax="false"/>

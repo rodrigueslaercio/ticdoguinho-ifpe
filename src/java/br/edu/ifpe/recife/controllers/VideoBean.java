@@ -14,7 +14,6 @@ import br.edu.ifpe.recife.model.classes.TutorVideo;
 import br.edu.ifpe.recife.model.dao.ManagerDao;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
@@ -43,6 +42,7 @@ public class VideoBean {
     private TutorVideo tutorVideo;
     private int postId;
     private Comentario comentario;
+    private Comentario response;
 
     @PostConstruct
     public void init() {
@@ -82,7 +82,7 @@ public class VideoBean {
             Tutor tutorLogado = ((LoginController) ((HttpSession) FacesContext.getCurrentInstance()
                     .getExternalContext().getSession(true))
                     .getAttribute("loginController")).getTutorLogado();
-            
+
             this.tutorVideo.setVideo(blob);
             this.tutorVideo.setTutor(tutorLogado);
             this.post.setTutorVideo(tutorVideo);
@@ -147,45 +147,72 @@ public class VideoBean {
 
         return "indexPet";
     }
-    
+
     public Post fetchPost() {
         return (Post) ManagerDao.getCurrentInstance().read("select p from Post p where p.id = " + postId, Post.class).get(0);
     }
-    
+
     public List<Comentario> fetchPostComentarios() {
-        List<Comentario> comentarios = ManagerDao.getCurrentInstance().read("select c from Comentario c where c.post.id = " + postId +
-                " order by c.data DESC", Comentario.class);
-        
+        List<Comentario> comentarios = ManagerDao.getCurrentInstance().read("select c from Comentario c where c.post.id = " + postId
+                + " order by c.data DESC", Comentario.class);
+
         return comentarios;
     }
-    
-    public String doComentario(String texto) throws UnsupportedEncodingException {
-        Pet selection = ((PetController) ((HttpSession) FacesContext.getCurrentInstance()
-                .getExternalContext().getSession(true))
-                .getAttribute("petController")).getSelection();
+
+    public String doComentario(String texto) {
         Post post = (Post) ManagerDao.getCurrentInstance().read("select p from Post p where p.id = " + postId, Post.class).get(0);
-        this.comentario = new Comentario();
-        this.comentario.setAutor(selection);
-        this.comentario.setPost(post);
-        this.comentario.setTexto(texto);
-        this.comentario.setData(new Date());
-        post.getComentarios().add(comentario);
-        
         Post updatedPost = post;
-        
-        ManagerDao.getCurrentInstance().insert(this.comentario);
-        ManagerDao.getCurrentInstance().update(updatedPost);
+        this.comentario = new Comentario();
+        if (!texto.equals("")) {
+            Pet selection = ((PetController) ((HttpSession) FacesContext.getCurrentInstance()
+                    .getExternalContext().getSession(true))
+                    .getAttribute("petController")).getSelection();
+            this.comentario.setAutor(selection);
+            this.comentario.setPost(post);
+            this.comentario.setTexto(texto);
+            this.comentario.setData(new Date());
+            post.getComentarios().add(comentario);
+
+            ManagerDao.getCurrentInstance().insert(this.comentario);
+            ManagerDao.getCurrentInstance().update(updatedPost);
+
+            return "postagem.xhtml?faces-redirect=true&postId=" + updatedPost.getId();
+        }
+
+        return "postagem.xhtml?faces-redirect=true&postId=" + updatedPost.getId();
+
+    }
+    
+    public String doResponse(String texto) {
+        Post post = (Post) ManagerDao.getCurrentInstance().read("select p from Post p where p.id = " + postId, Post.class).get(0);
+        Post updatedPost = post;
+        Comentario comentarioForResponse = this.getResponse();
+        Comentario response = new Comentario();
+        if (!texto.equals("")) {
+            Pet selection = ((PetController) ((HttpSession) FacesContext.getCurrentInstance()
+                    .getExternalContext().getSession(true))
+                    .getAttribute("petController")).getSelection();
+            response.setAutor(selection);
+            response.setData(new Date());
+            response.setTexto(texto);
+            comentarioForResponse.getRespostas().add(response);
+            
+            ManagerDao.getCurrentInstance().update(comentarioForResponse);
+            ManagerDao.getCurrentInstance().update(post);
+                        
+            return "postagem.xhtml?faces-redirect=true&postId=" + updatedPost.getId();
+        }
         
         return "postagem.xhtml?faces-redirect=true&postId=" + updatedPost.getId();
     }
-    
+
     public String displayDate(Date date) {
         SimpleDateFormat displayFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         String formattedDateTime = displayFormat.format(date);
 
         return "Postado em " + formattedDateTime.replace(" ", " às ");
     }
-    
+
     public String displayDateComments(Date date) {
         SimpleDateFormat displayFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         String formattedDateTime = displayFormat.format(date);
@@ -197,6 +224,23 @@ public class VideoBean {
         return blob != null ? Base64.getEncoder().encodeToString(blob) : "";
     }
 
+    public void likeComment(Comentario comentario) {
+        Pet selection = ((PetController) ((HttpSession) FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(true))
+                .getAttribute("petController")).getSelection();
+        comentario.getLikes().add(selection);
+        ManagerDao.getCurrentInstance().update(comentario);
+    }
+
+    public void dislikeComment(Comentario comentario) {
+        Pet selection = ((PetController) ((HttpSession) FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(true))
+                .getAttribute("petController")).getSelection();
+        comentario.getLikes().remove(selection);
+        ManagerDao.getCurrentInstance().update(comentario);
+    }
+    
+
     public int getPostId() {
         return postId;
     }
@@ -204,5 +248,15 @@ public class VideoBean {
     public void setPostId(int postId) {
         this.postId = postId;
     }
+
+    public Comentario getResponse() {
+        return response;
+    }
+
+    public void setResponse(Comentario response) {
+        this.response = response;
+    }
     
+    
+
 }

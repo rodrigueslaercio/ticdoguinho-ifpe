@@ -6,13 +6,18 @@
 package br.edu.ifpe.recife.model.classes;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -31,7 +36,9 @@ public class Comentario {
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
-    private int pontuacao;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Pet> likes;
+    private List<Comentario> respostas;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(columnDefinition = "DATETIME")
     private Date data;
@@ -68,12 +75,12 @@ public class Comentario {
         this.post = post;
     }
 
-    public int getPontuacao() {
-        return pontuacao;
+    public List<Pet> getLikes() {
+        return likes;
     }
 
-    public void setPontuacao(int pontuacao) {
-        this.pontuacao = pontuacao;
+    public void setLikes(List<Pet> likes) {
+        this.likes = likes;
     }
 
     public Date getData() {
@@ -83,7 +90,32 @@ public class Comentario {
     public void setData(Date data) {
         this.data = data;
     }
+
+    public List<Comentario> getRespostas() {
+        return respostas;
+    }
+
+    public void setRespostas(List<Comentario> respostas) {
+        this.respostas = respostas;
+    }
     
-    
-    
+    // Para o remove() da List de likes funcionar
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Pet otherPet = (Pet) obj;
+
+        return Objects.equals(this.getId(), otherPet.getCodigo());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getId());
+    }
 }

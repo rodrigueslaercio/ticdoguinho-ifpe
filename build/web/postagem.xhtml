@@ -17,7 +17,7 @@
                 <f:viewParam name="postId" value="#{videoBean.postId}" />
             </f:metadata>
         </f:view>
-        
+
         <b:form id="postagemForm">
             <div style="display: flex; justify-content: center; align-items: center; ">
                 <b:panelGrid columns="1" style="text-align: center; margin-top: 50px; width: 450px;">
@@ -73,7 +73,16 @@
                                 <b:panel style="display: inline-block; width: 400px;">
                                     <img class="imgPet" src="data:image/jpeg;base64,#{petController.imagemFilterPet(comment.autor)}" 
                                          style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"/>
-                                    <h:outputText id="autorUsername" value="@#{comment.autor.username}"/>
+                                    <c:choose>
+                                        <c:when test="#{tutorController.isPetDoTutor(comment.autor) eq true}">
+                                            <h:outputText value="@#{comment.autor.username}"/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <h:link value="@#{comment.autor.username}" outcome="buscaPets.xhtml">
+                                                <f:param name="petCodigo" value="#{comment.autor.codigo}"/>
+                                            </h:link>
+                                        </c:otherwise>
+                                    </c:choose>
                                     <div>
                                         <h:outputText value="#{comment.texto}"/><br/>
                                         <c:choose>
@@ -96,24 +105,33 @@
 
                                 <c:if test="#{comment.respostas.size() > 0}">
                                     <c:forEach items="#{comment.respostas}" var="response">
-                                            <b:panel id="panelResponses" style="display: inline-block; width: 200px; margin-left: auto; margin-right: auto;">
-                                                <img class="imgPet" src="data:image/jpeg;base64,#{petController.imagemFilterPet(response.autor)}" 
-                                                     style="width: 25px; height: 25px; object-fit: cover; border-radius: 50%;"/>
-                                                <h:outputText id="autorUsername" value="@#{response.autor.username}"/>
-                                                <div>
-                                                    <h:outputText value="#{response.texto}"/><br/>
-                                                    <c:choose>
-                                                        <c:when test="#{response.likes.contains(petController.selection)}">
-                                                            <b:commandLink action="#{videoBean.dislikeComment(response)}" icon-awesome="fas fa-thumbs-down"/>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <b:commandLink action="#{videoBean.likeComment(response)}" icon-awesome="fas fa-thumbs-up"/>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                    <h:outputText value="#{response.likes.size()}"/>
-                                                     <b:commandLink id="commandResponse" action="#{videoBean.setResponse(comment)}" oncomplete="openModal()" value="responder" ajax="true"/><br/>
-                                                </div>
-                                            </b:panel>
+                                        <b:panel id="panelResponses" style="display: inline-block; width: 200px; margin-left: auto; margin-right: auto;">
+                                            <img class="imgPet" src="data:image/jpeg;base64,#{petController.imagemFilterPet(response.autor)}" 
+                                                 style="width: 25px; height: 25px; object-fit: cover; border-radius: 50%;"/>
+                                            <c:choose>
+                                                <c:when test="#{tutorController.isPetDoTutor(response.autor) eq true}">
+                                                    <h:outputText id="autorUsername" value="@#{response.autor.username}"/>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <h:link value="@#{response.autor.username}" outcome="buscaPets.xhtml">
+                                                        <f:param name="petCodigo" value="#{response.autor.codigo}"/>
+                                                    </h:link>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <div>
+                                                <h:outputText value="#{response.texto}"/><br/>
+                                                <c:choose>
+                                                    <c:when test="#{response.likes.contains(petController.selection)}">
+                                                        <b:commandLink action="#{videoBean.dislikeComment(response)}" icon-awesome="fas fa-thumbs-down"/>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <b:commandLink action="#{videoBean.likeComment(response)}" icon-awesome="fas fa-thumbs-up"/>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <h:outputText value="#{response.likes.size()}"/><br/>
+                                                <b:commandLink id="commandResponse" action="#{videoBean.setResponse(comment)}" oncomplete="openModal()" value="responder" ajax="true"/><br/>
+                                            </div>
+                                        </b:panel>
                                         <br/>
                                     </c:forEach>
                                 </c:if>

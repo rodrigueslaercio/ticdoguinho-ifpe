@@ -38,6 +38,9 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
+    @Column(length = 500)
+    private String texto;
+    
     @OneToOne
     @JoinColumn(name = "tutor_video_id")
     private TutorVideo tutorVideo;
@@ -64,7 +67,7 @@ public class Post {
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public TutorVideo getTutorVideo() {
         return tutorVideo;
     }
@@ -119,6 +122,15 @@ public class Post {
 
         return Objects.equals(this.getId(), otherPet.getCodigo());
     }
+
+    public String getTexto() {
+        return texto;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
+    
 
     @Override
     public int hashCode() {

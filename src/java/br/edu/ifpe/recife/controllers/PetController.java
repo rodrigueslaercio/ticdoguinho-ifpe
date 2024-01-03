@@ -50,15 +50,6 @@ public class PetController {
         TutorPet tutorPet = new TutorPet();
         tutorPet.setPet(this.cadastro);
         tutorPet.setTutor(tutorLogado);
-
-        // checa se o tutor logado já possui um pet com mesmo nome
-        if (checkDuplicata(this.cadastro.getNome())) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "Pet já com esse nome já cadastrado", ""));
-            this.cadastro = new Pet();
-
-            return "cadastroPets";
-        }
        
         if (checkUsernameInUse(this.cadastro.getUsername())) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -166,25 +157,6 @@ public class PetController {
     // retorna os tutores do pet filtrados na pesquisa
     public List<TutorPet> tutoresDoFilterPet(Pet pet) {
         return ManagerDao.getCurrentInstance().read("select tp from TutorPet tp where tp.pet.codigo = " + pet.getCodigo(), Pet.class);
-    }
-
-    public boolean checkDuplicata(String nome) {
-        List<Pet> petsAssociados = ManagerDao.getCurrentInstance().read("select p from Pet p join TutorPet tp where tp.tutor.codigo = " + tutorLogadoSession().getCodigo(), Pet.class);
-
-        String jpql = "select p from Pet p where p.nome = :nome";
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("nome", nome);
-        List<Pet> petsComMesmoNome = ManagerDao.getCurrentInstance().read(jpql, Pet.class, parameters);
-
-        for (Pet petAssociado : petsAssociados) {
-            for (Pet petComMesmoNome : petsComMesmoNome) {
-                if (petAssociado.getNome().equals(petComMesmoNome.getNome())) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
     
     public boolean checkUsernameInUse(String username) {

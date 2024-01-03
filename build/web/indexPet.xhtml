@@ -99,6 +99,7 @@
                                                 </video>
                                             </b:tab>
                                         </b:tabView>
+                                        <h:outputText value="#{post.texto}"/><br/>
                                         <c:choose>
                                             <c:when test="#{post.likes.contains(petController.selection)}">
                                                 <b:commandLink action="#{petController.dislike(post)}" icon-awesome="fas fa-thumbs-down"/>
@@ -114,7 +115,7 @@
                                         </h:link>
                                         <h:outputText value="#{post.comentarios.size()}"/>
                                         <br/>
-                                        <h:outputText value="#{videoBean.displayDate(post.uploadDateTime)}" />
+                                        <h:outputText style="font-size: smaller;" value="#{videoBean.displayDate(post.uploadDateTime)}" />
                                     </b:panel>
                                 </c:forEach>
                             </b:panelGrid>
@@ -209,9 +210,16 @@
                                         </div>
                                         <b:panelGrid columns="2" colSpans="12">
                                             <b:column>
-                                                <h:link value="#{pet.nome}" outcome="buscaPets.xhtml" style="margin-left: 30px; margin-bottom: 100px;">
-                                                    <f:param name="petCodigo" value="#{pet.codigo}" />
-                                                </h:link>
+                                                <c:choose>
+                                                    <c:when test="#{tutorController.isPetDoTutor(pet) eq true}">
+                                                        <h:outputText id="autorUsername" value="#{pet.nome}"/>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <h:link value="#{pet.nome}" outcome="buscaPets.xhtml" style="margin-left: 30px; margin-bottom: 100px;">
+                                                            <f:param name="petCodigo" value="#{pet.codigo}" />
+                                                        </h:link>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </b:column>
                                             <b:column>
                                                 <h:outputText style="font-weight: lighter;" value="@#{pet.username}"/>
@@ -267,8 +275,9 @@
                 <h:outputText value="Video do Tutor"/>
                 <p:fileUpload fileUploadListener="#{videoBean.uploadVideoTutor}" update="messages" style="width: 850px;"/>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" />
-
-                <b:commandButton value="Postar" action="#{videoBean.doPost()}" ajax="false"/>
+                <h:outputText value="Texto"/><br/>
+                <h:inputTextarea value="#{texto}" style="width: 350px; height: 100px"/><br/>
+                <b:commandButton value="Postar" action="#{videoBean.doPost(texto)}" ajax="false"/>
             </b:form>
         </b:modal>
     </h:body>

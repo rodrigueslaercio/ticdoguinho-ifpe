@@ -138,7 +138,8 @@ public class VideoBean {
         return videos;
     }
 
-    public String doPost() {
+    public String doPost(String texto) {
+        this.post.setTexto(texto);
         this.post.setUploadDateTime(new Date());
 
         ManagerDao.getCurrentInstance().insert(this.petVideo);
@@ -240,7 +241,6 @@ public class VideoBean {
         ManagerDao.getCurrentInstance().update(comentario);
     }
     
-
     public int getPostId() {
         return postId;
     }

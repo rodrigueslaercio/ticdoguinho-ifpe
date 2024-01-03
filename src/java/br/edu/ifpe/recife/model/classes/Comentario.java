@@ -27,18 +27,25 @@ import javax.persistence.TemporalType;
  */
 @Entity
 public class Comentario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private Pet autor;
+
     @Column(length = 500)
     private String texto;
+
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Pet> likes;
+
     private List<Comentario> respostas;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(columnDefinition = "DATETIME")
     private Date data;
@@ -98,7 +105,7 @@ public class Comentario {
     public void setRespostas(List<Comentario> respostas) {
         this.respostas = respostas;
     }
-    
+
     // Para o remove() da List de likes funcionar
     @Override
     public boolean equals(Object obj) {

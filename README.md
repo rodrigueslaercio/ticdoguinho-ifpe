@@ -1,6 +1,6 @@
 # Ticdoguinho
 
-## This was a project for the discipline of Development of Web Systems III at IFPE - Recife, using Java 8, JSF (Bootfaces & Primefaces) and JPA. 
+## This was a project for the discipline of Development of Web Systems III at IFPE - Recife, using Java 8, JSF (Bootsfaces & Primefaces) and JPA. 
 
 It consists of a TikTok-like video uploading social media for pets and their owners.
 #### The main features are: 
